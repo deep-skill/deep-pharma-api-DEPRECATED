@@ -1,14 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 
 @Controller()
 export class AdminController {
-  constructor() { 
+  constructor() {}
 
-  }
-
-  @Get("hello")
+  @Get('hello')
   getHello(): string {
-    return "Hello";
+    return 'Hello';
   }
-
 }
