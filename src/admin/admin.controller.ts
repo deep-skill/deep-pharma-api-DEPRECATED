@@ -1,19 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
+import { Roles } from 'src/authorization/roles.decorator';
+import { RolesGuard } from 'src/authorization/roles.guard';
 
 @Controller()
+@UseGuards(AuthorizationGuard, RolesGuard)
 export class AdminController {
   constructor() {}
 
-  @Get('hello')
-  getHello(): string {
-    return 'Hello';
+  @Get('public')
+  getPrueba() {
+    return { message: 'This is a route' };
+  }
+
+  @Roles(['Admin', 'Owner'])
+  @Get('private')
+  getHello() {
+    return {
+      message: 'This is a protected route for authorized users',
+    };
   }
 }
