@@ -4,9 +4,13 @@ import { AppService } from './app.service';
 import { PharmacistModule } from './pharmacist/pharmacist.module';
 import { AdminModule } from './admin/admin.module';
 import { RouterModule } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PharmacistModule,
     AdminModule,
     RouterModule.register([
