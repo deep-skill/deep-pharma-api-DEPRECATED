@@ -23,7 +23,7 @@ export class RolesGuard implements CanActivate {
     const hasRoles = roles.some((role: string) => userRoles.includes(role));
 
     if (!hasRoles) {
-      throw new ForbiddenException('Role unauthorize');
+      throw new ForbiddenException('User unauthorized');
     }
 
     return true;
