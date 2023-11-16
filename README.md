@@ -5,9 +5,19 @@
 Create a `.env` file in the root of the project and after that paste the following variables:
 
 ```env
+# Config
 PORT=3001
+
+# Auth0
 ISSUER_BASE_URL=https://dev-prcdh8fl4ig1zyzy.us.auth0.com
 AUDIENCE=https://deep-pharma.com
+
+# Database
+DB_HOST='localhost'
+DB_PORT=3306
+DB_USERNAME='root'
+DB_PASSWORD='123456'
+DB_NAME='deep_pharma_db'
 ```
 
 This will automatically connect our Nestjs API with Auth0
@@ -29,8 +39,8 @@ docker exec -it deep-pharma-mysql bash
 3. Enter the user and the password
 
 ```bash
+mysql -h 172.17.0.2 -P 3306 --protocol=tcp -u root -p
 // password: 123456
- mysl -u root -p
 ```
 
 4. create the database
