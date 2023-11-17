@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -22,7 +23,7 @@ export class DrugstoreService {
 
       return this.drugstoreModel.findAll({
         where: {
-          deletedAt: null,
+          deleted_at: null,
         },
       });
     } catch (error) {
@@ -47,7 +48,7 @@ export class DrugstoreService {
     }
   }
 
-  async create(drugstoreData: CreateDrugstoreDto) {
+  async create(drugstoreData: CreateDrugstoreDto): Promise<Drugstore> {
     try {
       const { RUC, legal_name, commercial_name, logo } = drugstoreData;
 
@@ -97,12 +98,12 @@ export class DrugstoreService {
       throw new NotFoundException('Drugstore not found');
     }
 
-    if (drugstore.deletedAt) {
+    if (drugstore.deleted_at) {
       throw new ConflictException('Drugstore has already been deleted');
     }
 
     try {
-      drugstore.deletedAt = new Date();
+      drugstore.deleted_at = new Date();
       await drugstore.save();
       return drugstore;
     } catch (error) {
@@ -128,7 +129,7 @@ export class DrugstoreService {
 
       return {
         message: 'Drugstore has been physically deleted',
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
       };
     } catch (error) {
       throw new BadRequestException(

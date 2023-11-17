@@ -1,10 +1,12 @@
 import {
   Column,
+  CreatedAt,
   DataType,
   HasMany,
   Index,
   Model,
   Table,
+  UpdatedAt,
 } from 'sequelize-typescript';
 import { Venue } from './venue.model';
 
@@ -18,12 +20,12 @@ export class Drugstore extends Model {
   })
   id: number;
 
-  @Index({ unique: true, name: 'idx_drugstores_RUC_unique' })
-  @Column({ unique: true, allowNull: false })
+  @Index('idx_drugstores_RUC_unique')
+  @Column({ allowNull: false })
   RUC: string;
 
-  @Index({ unique: true, name: 'idx_drugstore_legal_name_unique' })
-  @Column({ unique: true, allowNull: false })
+  @Index('idx_drugstore_legal_name_unique')
+  @Column({ allowNull: false })
   legal_name: string;
 
   @Column
@@ -33,7 +35,15 @@ export class Drugstore extends Model {
   logo: string;
 
   @Column
-  deletedAt: Date;
+  deleted_at: Date;
+
+  @Column({ allowNull: false })
+  @CreatedAt
+  created_at: Date;
+
+  @Column({ allowNull: false })
+  @UpdatedAt
+  updated_at: Date;
 
   @HasMany(() => Venue)
   venues: Venue[];
