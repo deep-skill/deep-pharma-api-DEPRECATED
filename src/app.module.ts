@@ -8,23 +8,27 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { DatabaseModule } from './modules/database/database.module';
+import { DrugstoreModule } from './modules/drugstore/drugstore.module';
+import { VenueModule } from './modules/venue/venue.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    PharmacistModule,
-    AdminModule,
-    InventoryModule,
-    UsersModule,
     RouterModule.register([
       {
         path: 'admin',
         module: AdminModule,
       },
     ]),
+    PharmacistModule,
+    AdminModule,
+    InventoryModule,
+    UsersModule,
     DatabaseModule,
+    DrugstoreModule,
+    VenueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
