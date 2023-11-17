@@ -11,7 +11,6 @@ function checkEnvironment(configService: ConfigService) {
     if (!configService.get<string>(envVariable)) {
       throw Error(`Undefined environment variable: ${envVariable}`);
     }
-    
   });
 }
 
