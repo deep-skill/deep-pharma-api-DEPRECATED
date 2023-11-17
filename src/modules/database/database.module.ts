@@ -4,6 +4,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Drugstore } from 'src/models/drugstore.model';
 import { User } from 'src/models/user.model';
 import { Venue } from 'src/models/venue.model';
+import { Inventories } from 'src/models/inventory.model';
+import { Stock_items } from 'src/models/stock-item.model';
+
 
 @Module({
   imports: [
@@ -16,7 +19,7 @@ import { Venue } from 'src/models/venue.model';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        models: [User, Drugstore, Venue],
+        models: [User, Drugstore, Venue, Inventories, Stock_items],
         autoLoadModels: true,
         synchronize: true,
       }),

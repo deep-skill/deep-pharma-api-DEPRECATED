@@ -7,6 +7,7 @@ import { RouterModule } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
+import { StockItemsModule } from './modules/stock-item/stock-item.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { DrugstoreModule } from './modules/drugstore/drugstore.module';
 import { VenueModule } from './modules/venue/venue.module';
@@ -25,6 +26,7 @@ import { VenueModule } from './modules/venue/venue.module';
     PharmacistModule,
     AdminModule,
     InventoryModule,
+    StockItemsModule,
     UsersModule,
     DatabaseModule,
     DrugstoreModule,
