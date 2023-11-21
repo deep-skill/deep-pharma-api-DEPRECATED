@@ -2,6 +2,7 @@ import {
   Controller,
   ParseIntPipe,
   Param,
+  Query,
   Body,
   Get,
   Post,
@@ -9,20 +10,20 @@ import {
   Delete,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { CreateInventoryDto, UpdateInventoryDto } from './dtos/inventory.dto';
+import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 
 @Controller('inventory')
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
   @Get()
-  getInventories() {
-    return this.inventoryService.findAll();
+  getInventories(@Query('includeDeleted') includeDeleted: boolean) {
+    return this.inventoryService.findAll(includeDeleted);
   }
 
   @Get(':id')
   getInventoryById(@Param('id', ParseIntPipe) id: number) {
-    return this.inventoryService.findOne(id);
+    return this.inventoryService.findById(id);
   }
 
   @Post()
@@ -39,7 +40,7 @@ export class InventoryController {
   }
 
   @Delete(':id')
-  deleteInventory(@Param('id', ParseIntPipe) id: number) {
-    return this.inventoryService.delete(id);
+  softDeleteInventory(@Param('id', ParseIntPipe) id: number) {
+    return this.inventoryService.softDelete(id);
   }
 }
