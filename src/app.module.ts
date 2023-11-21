@@ -10,11 +10,13 @@ import { InventoryModule } from './modules/inventory/inventory.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { DrugstoreModule } from './modules/drugstore/drugstore.module';
 import { VenueModule } from './modules/venue/venue.module';
+import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [databaseConfig],
     }),
     RouterModule.register([
       {
