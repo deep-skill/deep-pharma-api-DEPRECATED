@@ -118,15 +118,16 @@ export class VenueService {
   }
 
   async softDelete(id: number): Promise<Venue> {
-    const venue = await this.findById(id);
+    const deletedVenue = await this.venueModel.destroy({
+      where: { id },
+    });
 
-    if (!venue) {
+    if (deletedVenue === 0) {
       throw new NotFoundException('Venue not found');
     }
 
     try {
-      await venue.destroy();
-      return venue;
+      return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
         `Failed to delete venue: ${error.message}`,
