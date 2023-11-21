@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Drugstore } from 'src/models/drugstore.model';
-import { User } from 'src/models/user.model';
 import { Venue } from 'src/models/venue.model';
+import { Inventory } from 'src/models/inventory.model';
+import { Stock_item } from 'src/models/stock-item.model';
+import { Provider } from 'src/models/provider.model';
+import { Supply_invoice } from 'src/models/supply-invoice.model';
 
 @Module({
   imports: [
@@ -16,7 +19,14 @@ import { Venue } from 'src/models/venue.model';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        models: [User, Drugstore, Venue],
+        models: [
+          Drugstore,
+          Venue,
+          Inventory,
+          Stock_item,
+          Provider,
+          Supply_invoice,
+        ],
         autoLoadModels: true,
         synchronize: true,
       }),
