@@ -3,10 +3,12 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { Drugstore } from './drugstore.model';
+import { Inventory } from './inventory.model';
 
 @Table({
   paranoid: true,
@@ -45,4 +47,7 @@ export class Venue extends Model {
 
   @BelongsTo(() => Drugstore)
   drugstore: Drugstore;
+
+  @HasMany(() => Inventory)
+  inventories: Inventory[];
 }
