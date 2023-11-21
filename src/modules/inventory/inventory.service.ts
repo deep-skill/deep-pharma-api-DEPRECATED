@@ -31,16 +31,16 @@ export class InventoryService {
 
   async findById(id: number) {
     try {
-      const InventoryFound = await this.inventoryModel.findOne({
+      const inventoryFound = await this.inventoryModel.findOne({
         where: {
           id,
         },
         paranoid: false,
       });
 
-      if (!InventoryFound) return new NotFoundException('Inventory not found');
+      if (!inventoryFound) return new NotFoundException('Inventory not found');
 
-      return InventoryFound;
+      return inventoryFound;
     } catch (error) {
       return new InternalServerErrorException(`Inventory not found: ${error}`);
     }
