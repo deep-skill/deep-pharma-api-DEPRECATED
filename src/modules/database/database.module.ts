@@ -7,6 +7,10 @@ import { Inventory } from 'src/models/inventory.model';
 import { Stock_item } from 'src/models/stock-item.model';
 import { Provider } from 'src/models/provider.model';
 import { Supply_invoice } from 'src/models/supply-invoice.model';
+import { Product } from 'src/models/product.model';
+import { Brand } from 'src/models/brand.model';
+import { Tag } from 'src/models/tag.model';
+import { ProductTag } from 'src/models/product-tag.model';
 
 @Module({
   imports: [
@@ -26,6 +30,10 @@ import { Supply_invoice } from 'src/models/supply-invoice.model';
           Stock_item,
           Provider,
           Supply_invoice,
+          Product,
+          Brand,
+          Tag,
+          ProductTag,
         ],
         autoLoadModels: true,
         synchronize: true,

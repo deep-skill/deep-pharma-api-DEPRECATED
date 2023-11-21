@@ -12,6 +12,7 @@ import { DrugstoreModule } from './modules/drugstore/drugstore.module';
 import { VenueModule } from './modules/venue/venue.module';
 import { ProviderModule } from './modules/provider/provider.module';
 import { SupplyInvoiceModule } from './modules/supply-invoice/supply-invoice.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SupplyInvoiceModule } from './modules/supply-invoice/supply-invoice.mod
     VenueModule,
     ProviderModule,
     SupplyInvoiceModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

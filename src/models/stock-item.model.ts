@@ -46,10 +46,11 @@ export class Stock_item extends Model {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   })
   quantity: number;
 
-  @Index({ name: 'idx_stock_items_name' })
+  @Index({ name: 'idx_stock_items_name', type: 'FULLTEXT' })
   @Column({ type: DataType.STRING })
   comment: string;
 
@@ -64,6 +65,6 @@ export class Stock_item extends Model {
   @BelongsTo(() => Inventory)
   inventory: Inventory;
 
-  // @BelongsTo(() => Supply_invoice)
-  // supply_invoices: Supply_invoice;
+  @BelongsTo(() => Supply_invoice)
+  supply_invoices: Supply_invoice;
 }
