@@ -92,15 +92,16 @@ export class DrugstoreService {
   }
 
   async softDelete(id: number): Promise<Drugstore> {
-    const drugstore = await this.findById(id);
+    const deletedDrugstore = await this.drugstoreModel.destroy({
+      where: { id },
+    });
 
-    if (!drugstore) {
+    if (deletedDrugstore === 0) {
       throw new NotFoundException('Drugstore not found');
     }
 
     try {
-      await drugstore.destroy();
-      return drugstore;
+      return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
         `Failed to delete drugstore: ${error.message}`,
