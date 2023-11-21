@@ -1,8 +1,7 @@
 import {
-  BadRequestException,
   ConflictException,
-  HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -27,7 +26,7 @@ export class DrugstoreService {
         },
       });
     } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to obtain drugstores: ${error.message}`,
       );
     }
@@ -42,7 +41,7 @@ export class DrugstoreService {
     try {
       return drugstore;
     } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to obtain drugstore: ${error.message}`,
       );
     }
@@ -66,7 +65,7 @@ export class DrugstoreService {
           'Drugstore with this legal name or RUC already exists',
         );
       }
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to create drugstore: ${error.message}`,
       );
     }
@@ -86,7 +85,7 @@ export class DrugstoreService {
       await drugstore.update(drugstoreData);
       return drugstore;
     } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to update drugstore: ${error.message}`,
       );
     }
@@ -94,45 +93,16 @@ export class DrugstoreService {
 
   async softDelete(id: number): Promise<Drugstore> {
     const drugstore = await this.findById(id);
+
     if (!drugstore) {
       throw new NotFoundException('Drugstore not found');
     }
 
-    if (drugstore.deleted_at) {
-      throw new ConflictException('Drugstore has already been deleted');
-    }
-
     try {
-      drugstore.deleted_at = new Date();
-      await drugstore.save();
+      await drugstore.destroy();
       return drugstore;
     } catch (error) {
-      throw new BadRequestException(
-        `Failed to delete drugstore: ${error.message}`,
-      );
-    }
-  }
-
-  async hardDelete(id: number) {
-    const drugstore = await this.drugstoreModel.findByPk(id);
-
-    if (!drugstore) {
-      throw new NotFoundException(
-        'Drugstore not found or has already been deleted',
-      );
-    }
-
-    try {
-      await this.drugstoreModel.destroy({
-        where: { id },
-      });
-
-      return {
-        message: 'Drugstore has been physically deleted',
-        statusCode: HttpStatus.OK,
-      };
-    } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to delete drugstore: ${error.message}`,
       );
     }

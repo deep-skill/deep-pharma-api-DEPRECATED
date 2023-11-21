@@ -1,16 +1,20 @@
 import {
   BelongsTo,
   Column,
-  CreatedAt,
   DataType,
   ForeignKey,
   Model,
   Table,
-  UpdatedAt,
 } from 'sequelize-typescript';
 import { Drugstore } from './drugstore.model';
 
-@Table
+@Table({
+  paranoid: true,
+  tableName: 'venues',
+  deletedAt: 'deleted_at',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+})
 export class Venue extends Model {
   @Column({
     type: DataType.BIGINT,
@@ -20,7 +24,7 @@ export class Venue extends Model {
   })
   id: number;
 
-  @Column({ allowNull: false })
+  @Column
   name: string;
 
   @Column
@@ -31,17 +35,6 @@ export class Venue extends Model {
 
   @Column
   email: string;
-
-  @Column
-  deleted_at: Date;
-
-  @Column({ allowNull: false })
-  @CreatedAt
-  created_at: Date;
-
-  @Column({ allowNull: false })
-  @UpdatedAt
-  updated_at: Date;
 
   @ForeignKey(() => Drugstore)
   @Column({

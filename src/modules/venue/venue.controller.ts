@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Put,
   Query,
@@ -50,13 +49,8 @@ export class VenueController {
     return this.venueService.update(id, venueData);
   }
 
-  @Patch(':id')
+  @Delete(':id')
   async softDeleteVenue(@Param('id', ParseIntPipe) id: number): Promise<Venue> {
     return this.venueService.softDelete(id);
-  }
-
-  @Delete('hardDelete/:id')
-  async hardDeleteVenue(@Param('id', ParseIntPipe) id: number) {
-    return this.venueService.hardDelete(id);
   }
 }

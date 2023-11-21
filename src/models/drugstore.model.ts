@@ -1,16 +1,20 @@
 import {
   Column,
-  CreatedAt,
   DataType,
   HasMany,
   Index,
   Model,
   Table,
-  UpdatedAt,
 } from 'sequelize-typescript';
 import { Venue } from './venue.model';
 
-@Table
+@Table({
+  paranoid: true,
+  tableName: 'drugstores',
+  deletedAt: 'deleted_at',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+})
 export class Drugstore extends Model {
   @Column({
     type: DataType.BIGINT,
@@ -33,17 +37,6 @@ export class Drugstore extends Model {
 
   @Column
   logo: string;
-
-  @Column
-  deleted_at: Date;
-
-  @Column({ allowNull: false })
-  @CreatedAt
-  created_at: Date;
-
-  @Column({ allowNull: false })
-  @UpdatedAt
-  updated_at: Date;
 
   @HasMany(() => Venue)
   venues: Venue[];

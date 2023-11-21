@@ -1,8 +1,8 @@
 import {
   BadRequestException,
   ConflictException,
-  HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -29,7 +29,7 @@ export class VenueService {
         },
       });
     } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to obtain venues: ${error.message}`,
       );
     }
@@ -45,7 +45,9 @@ export class VenueService {
     try {
       return venue;
     } catch (error) {
-      throw new BadRequestException(`Failed to obtain venue: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to obtain venue: ${error.message}`,
+      );
     }
   }
 
@@ -63,7 +65,7 @@ export class VenueService {
     try {
       return venues;
     } catch (error) {
-      throw new BadRequestException(
+      throw new InternalServerErrorException(
         `Failed to obtain venues: ${error.message}`,
       );
     }
@@ -91,7 +93,10 @@ export class VenueService {
       if (error.name === 'SequelizeUniqueConstraintError') {
         throw new ConflictException('Venue with this name already exists');
       }
-      throw new BadRequestException(`Failed to create venue: ${error.message}`);
+
+      throw new InternalServerErrorException(
+        `Failed to create venue: ${error.message}`,
+      );
     }
   }
 
@@ -106,7 +111,9 @@ export class VenueService {
       await venue.update(venueData);
       return venue;
     } catch (error) {
-      throw new BadRequestException(`Failed to update venue: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to update venue: ${error.message}`,
+      );
     }
   }
 
@@ -117,39 +124,13 @@ export class VenueService {
       throw new NotFoundException('Venue not found');
     }
 
-    if (venue.deleted_at) {
-      throw new ConflictException('Venue has already been deleted');
-    }
-
     try {
-      venue.deleted_at = new Date();
-      await venue.save();
+      await venue.destroy();
       return venue;
     } catch (error) {
-      throw new BadRequestException(`Failed to delete venue: ${error.message}`);
-    }
-  }
-
-  async hardDelete(id: number) {
-    const venue = await this.findById(id);
-
-    if (!venue) {
-      throw new NotFoundException(
-        'Venue not found or has already been deleted',
+      throw new InternalServerErrorException(
+        `Failed to delete venue: ${error.message}`,
       );
-    }
-
-    try {
-      await this.venueModel.destroy({
-        where: { id },
-      });
-
-      return {
-        message: 'Venue has been physically deleted',
-        statusCode: HttpStatus.OK,
-      };
-    } catch (error) {
-      throw new BadRequestException(`Failed to delete venue: ${error.message}`);
     }
   }
 }

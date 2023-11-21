@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Put,
   Query,
@@ -47,15 +46,10 @@ export class DrugstoreController {
     return this.drugstoreService.update(id, drugstoreData);
   }
 
-  @Patch(':id')
+  @Delete(':id')
   async softDeleteDrugstore(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Drugstore> {
     return this.drugstoreService.softDelete(id);
-  }
-
-  @Delete('hardDelete/:id')
-  async hardDeleteDrugstore(@Param('id', ParseIntPipe) id: number) {
-    return this.drugstoreService.hardDelete(id);
   }
 }
