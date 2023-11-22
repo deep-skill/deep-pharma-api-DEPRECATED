@@ -1,9 +1,8 @@
 import {
-  BadRequestException,
   InternalServerErrorException,
-  HttpStatus,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Stock_item } from 'src/models/stock-item.model';
@@ -11,6 +10,12 @@ import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 
 @Injectable()
 export class StockItemsService {
+  private readonly foreignKeyMap = {
+    inventory_id: 'inventory_id',
+    supply_invoice_id: 'supply_invoice_id',
+    sale_item_id: 'sale_item_id',
+  };
+
   constructor(
     @InjectModel(Stock_item) private stockItemModel: typeof Stock_item,
   ) {}
@@ -50,19 +55,58 @@ export class StockItemsService {
     }
   }
 
+  async findByForeignKey(
+    id: number,
+    foreignKey: string,
+  ): Promise<Stock_item[]> {
+    const mappedForeignKey = this.foreignKeyMap[foreignKey];
+
+    if (!mappedForeignKey) {
+      throw new BadRequestException('Invalid foreign key provided');
+    }
+
+    const stockItems = await this.stockItemModel.findAll({
+      where: {
+        [mappedForeignKey]: id,
+      },
+    });
+
+    try {
+      return stockItems;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to obtain stock items: ${error.message}`,
+      );
+    }
+  }
+
   async create(stockItem: CreateStockItemDto) {
+    const {
+      inventory_id,
+      supply_invoice_id,
+      sale_item_id,
+      quantity,
+      comment,
+      expires_at,
+    } = stockItem;
+
     try {
       const createdItem = await this.stockItemModel.create({
-        inventory_id: stockItem.inventory_id,
-        quantity: stockItem.quantity,
-        comment: stockItem.comment ?? null,
-        expires_at: stockItem.expires_at ?? null,
+        inventory_id,
+        supply_invoice_id,
+        sale_item_id,
+        quantity,
+        comment,
+        expires_at,
       });
 
       return createdItem;
     } catch (error) {
+      if (error.name === 'SequelizeForeignKeyConstraintError') {
+        throw new BadRequestException(error.message);
+      }
       return new InternalServerErrorException(
-        `Stock-item could not be created: ${error}`,
+        `Stock-item could not be created: ${error.message}`,
       );
     }
   }

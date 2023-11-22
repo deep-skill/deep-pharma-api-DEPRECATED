@@ -10,6 +10,7 @@ import {
 } from 'sequelize-typescript';
 import { Inventory } from './inventory.model';
 import { Supply_invoice } from './supply-invoice.model';
+import { SaleItem } from './sale-item.model';
 
 @Table({
   paranoid: true,
@@ -43,6 +44,14 @@ export class Stock_item extends Model {
   })
   supply_invoice_id: number;
 
+  @Index({ name: 'fk_stock_items_sale_items1_idx' })
+  @ForeignKey(() => SaleItem)
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+  })
+  sale_item_id: number;
+
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
@@ -64,6 +73,9 @@ export class Stock_item extends Model {
   @BelongsTo(() => Inventory)
   inventory: Inventory;
 
-  // @BelongsTo(() => Supply_invoice)
-  // supply_invoices: Supply_invoice;
+  @BelongsTo(() => Supply_invoice)
+  supply_invoice: Supply_invoice;
+
+  @BelongsTo(() => SaleItem)
+  sale_item: SaleItem;
 }

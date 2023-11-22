@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { StockItemsService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
+import { Stock_item } from 'src/models/stock-item.model';
 
 @Controller('stock-item')
 export class StockItemsController {
@@ -24,6 +25,14 @@ export class StockItemsController {
   @Get(':id')
   getStockItemById(@Param('id', ParseIntPipe) id: number) {
     return this.stockItemsService.findById(id);
+  }
+
+  @Get(':foreignKey/:id')
+  getStockItemsByForeignKey(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('foreignKey') foreignKey: string,
+  ): Promise<Stock_item[]> {
+    return this.stockItemsService.findByForeignKey(id, foreignKey);
   }
 
   @Post()
