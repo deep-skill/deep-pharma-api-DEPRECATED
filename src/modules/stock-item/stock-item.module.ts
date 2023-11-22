@@ -3,11 +3,17 @@ import { StockItemsController } from './stock-item.controller';
 import { StockItemsService } from './stock-item.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Stock_item } from 'src/models/stock-item.model';
-import { Inventory } from 'src/models/inventory.model';
 import { InventoryModule } from '../inventory/inventory.module';
+import { SupplyInvoiceModule } from '../supply-invoice/supply-invoice.module';
+import { SaleItemModule } from '../sale-item/sale-item.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Stock_item])],
+  imports: [
+    SequelizeModule.forFeature([Stock_item]),
+    InventoryModule,
+    SupplyInvoiceModule,
+    SaleItemModule,
+  ],
   controllers: [StockItemsController],
   providers: [StockItemsService],
 })

@@ -12,6 +12,14 @@ export class CreateStockItemDto {
   @IsNumber()
   inventory_id: number;
 
+  @IsNotEmpty()
+  @IsNumber()
+  supply_invoice_id: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  sale_item_id: number;
+
   @IsNumber()
   @IsNotEmpty()
   quantity: number;

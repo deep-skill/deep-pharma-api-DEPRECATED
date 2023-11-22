@@ -3,10 +3,12 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ConcentrationUnit } from './concentration-unit.model';
+import { Stock_item } from './stock-item.model';
 
 @Table({
   paranoid: true,
@@ -42,4 +44,7 @@ export class SaleItem extends Model {
 
   @BelongsTo(() => ConcentrationUnit)
   ConcentrationUnit: ConcentrationUnit;
+
+  @HasMany(() => Stock_item)
+  stock_items: Stock_item[];
 }
