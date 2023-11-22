@@ -1,6 +1,7 @@
 import {
   Controller,
   ParseIntPipe,
+  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -17,7 +18,7 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  getTags(includeDeletd: boolean) {
+  getTags(@Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean) {
     return this.tagService.findAll(includeDeletd);
   }
 
@@ -34,7 +35,7 @@ export class TagController {
   @Put(':id')
   updateTag(@Body() tag: UpdateTagDto, @Param('id', ParseIntPipe) id: number) {
     return this.tagService.update(tag, id);
-  } 
+  }
 
   @Delete(':id')
   softDeleteBrand(@Param('id', ParseIntPipe) id: number) {

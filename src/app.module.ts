@@ -14,7 +14,6 @@ import { ProviderModule } from './modules/provider/provider.module';
 import { SupplyInvoiceModule } from './modules/supply-invoice/supply-invoice.module';
 import { ProductModule } from './modules/product/product.module';
 import { BrandModule } from './modules/brand/brand.module';
-import { TagModule } from './tag/tag.module';
 import { TagModule } from './modules/tag/tag.module';
 
 @Module({

@@ -6,6 +6,8 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Brand } from 'src/models/brand.model';
 import { CreateBrandDto, UpdateBrandDto } from './dto/brand.dto';
+import { Product } from 'src/models/product.model';
+import { Tag } from 'src/models/tag.model';
 
 @Injectable()
 export class BrandService {

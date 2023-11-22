@@ -8,6 +8,7 @@ import {
   Delete,
   Body,
   ParseIntPipe,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { StockItemsService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
@@ -17,7 +18,9 @@ export class StockItemsController {
   constructor(private readonly stockItemsService: StockItemsService) {}
 
   @Get()
-  getStockItems(@Query('includeDeleted') includeDeleted: boolean) {
+  getStockItems(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  ) {
     return this.stockItemsService.findAll(includeDeleted);
   }
 

@@ -1,6 +1,7 @@
 import {
   Controller,
   ParseIntPipe,
+  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -17,7 +18,9 @@ export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
   @Get()
-  getInventories(@Query('includeDeleted') includeDeleted: boolean) {
+  getInventories(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  ) {
     return this.inventoryService.findAll(includeDeleted);
   }
 

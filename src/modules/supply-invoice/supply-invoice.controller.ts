@@ -1,13 +1,13 @@
 import {
   Controller,
   ParseIntPipe,
+  ParseBoolPipe,
   Param,
   Query,
   Body,
   Get,
   Post,
   Put,
-  Patch,
   Delete,
 } from '@nestjs/common';
 import { SupplyInvoiceService } from './supply-invoice.service';
@@ -21,7 +21,9 @@ export class SupplyInvoiceController {
   constructor(private readonly supplyInvoiceService: SupplyInvoiceService) {}
 
   @Get()
-  getSupplyInvoices(@Query('includeDeleted') includeDeleted: boolean) {
+  getSupplyInvoices(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  ) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }
 

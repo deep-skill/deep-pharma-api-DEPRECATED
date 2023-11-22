@@ -1,6 +1,7 @@
 import {
   Controller,
   ParseIntPipe,
+  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -17,7 +18,7 @@ export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 
   @Get()
-  getProviders(@Query('includDeleted') includeDeleted: boolean) {
+  getProviders(@Query('includDeleted', ParseBoolPipe) includeDeleted: boolean) {
     return this.providerService.findAll(includeDeleted);
   }
 
