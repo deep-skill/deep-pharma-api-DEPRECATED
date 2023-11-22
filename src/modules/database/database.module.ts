@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import databaseConfig from 'src/config/database.config';
-import { ConcentrationUnit } from 'src/models/concentration-unit.model';
-import { Drugstore } from 'src/models/drugstore.model';
-import { SaleItem } from 'src/models/sale-item.model';
-import { Venue } from 'src/models/venue.model';
+import { models } from 'src/models/index.models';
 
 @Module({
   imports: [
@@ -21,7 +18,7 @@ import { Venue } from 'src/models/venue.model';
           username,
           password,
           database,
-          models: [Drugstore, Venue, SaleItem, ConcentrationUnit],
+          models,
           autoLoadModels: true,
           synchronize: true,
         };
