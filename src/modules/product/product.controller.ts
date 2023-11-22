@@ -18,7 +18,14 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  getProducts(@Query('includeDeleted', ParseBoolPipe) includeDelete: boolean) {
+  getProducts() {
+    return this.productService.findAll(false);
+  }
+
+  @Get()
+  getProductsIncludingDeleted(
+    @Query('includeDeleted', ParseBoolPipe) includeDelete: boolean,
+  ) {
     return this.productService.findAll(includeDelete);
   }
 

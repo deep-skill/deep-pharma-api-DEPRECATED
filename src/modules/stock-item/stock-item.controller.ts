@@ -18,7 +18,12 @@ export class StockItemsController {
   constructor(private readonly stockItemsService: StockItemsService) {}
 
   @Get()
-  getStockItems(
+  getStockItems() {
+    return this.stockItemsService.findAll(false);
+  }
+
+  @Get()
+  getStockItemsIncludingDeleted(
     @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
   ) {
     return this.stockItemsService.findAll(includeDeleted);

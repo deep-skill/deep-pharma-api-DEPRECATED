@@ -18,7 +18,14 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  getTags(@Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean) {
+  getTags() {
+    return this.tagService.findAll(false);
+  }
+
+  @Get()
+  getTagsIncludingDeleted(
+    @Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean,
+  ) {
     return this.tagService.findAll(includeDeletd);
   }
 
