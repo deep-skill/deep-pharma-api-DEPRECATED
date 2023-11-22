@@ -8,7 +8,13 @@ import {
 } from 'sequelize-typescript';
 import { Venue } from './venue.model';
 
-@Table
+@Table({
+  paranoid: true,
+  tableName: 'drugstores',
+  deletedAt: 'deleted_at',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+})
 export class Drugstore extends Model {
   @Column({
     type: DataType.BIGINT,
@@ -18,12 +24,12 @@ export class Drugstore extends Model {
   })
   id: number;
 
-  @Index({ unique: true, name: 'idx_drugstores_RUC_unique' })
-  @Column({ unique: true, allowNull: false })
+  @Index('idx_drugstores_RUC_unique')
+  @Column({ allowNull: false })
   RUC: string;
 
-  @Index({ unique: true, name: 'idx_drugstore_legal_name_unique' })
-  @Column({ unique: true, allowNull: false })
+  @Index('idx_drugstore_legal_name_unique')
+  @Column({ allowNull: false })
   legal_name: string;
 
   @Column
@@ -31,9 +37,6 @@ export class Drugstore extends Model {
 
   @Column
   logo: string;
-
-  @Column
-  deletedAt: Date;
 
   @HasMany(() => Venue)
   venues: Venue[];

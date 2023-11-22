@@ -8,5 +8,6 @@ import { Drugstore } from 'src/models/drugstore.model';
   imports: [SequelizeModule.forFeature([Drugstore])],
   controllers: [DrugstoreController],
   providers: [DrugstoreService],
+  exports: [DrugstoreService],
 })
 export class DrugstoreModule {}

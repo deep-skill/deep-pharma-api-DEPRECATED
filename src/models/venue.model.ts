@@ -10,7 +10,13 @@ import {
 import { Drugstore } from './drugstore.model';
 import { Inventory } from './inventory.model';
 
-@Table
+@Table({
+  paranoid: true,
+  tableName: 'venues',
+  deletedAt: 'deleted_at',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+})
 export class Venue extends Model {
   @Column({
     type: DataType.BIGINT,
