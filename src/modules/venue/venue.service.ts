@@ -36,7 +36,7 @@ export class VenueService {
   }
 
   async findById(id: number): Promise<Venue> {
-    const venue = await this.venueModel.findByPk(id);
+    const venue = await this.venueModel.findByPk(id, { paranoid: false });
 
     if (!venue) {
       throw new NotFoundException('Venue not found');
@@ -72,28 +72,21 @@ export class VenueService {
   }
 
   async create(venueData: CreateVenueDto): Promise<Venue> {
-    const { name, address, phone_number, email, drugstore_id } = venueData;
+    const { name, address, phoneNumber, email, drugstoreId } = venueData;
 
-    const drugstoreExists = await this.drugstoreService.findById(drugstore_id);
-    if (!drugstoreExists) {
-      throw new BadRequestException('Drugstore does not exist');
-    }
+    await this.drugstoreService.findById(drugstoreId);
 
     try {
       const newVenue = await this.venueModel.create({
         name,
         address,
-        phone_number,
+        phone_number: phoneNumber,
         email,
-        drugstore_id,
+        drugstore_id: drugstoreId,
       });
 
       return newVenue;
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        throw new ConflictException('Venue with this name already exists');
-      }
-
       throw new InternalServerErrorException(
         `Failed to create venue: ${error.message}`,
       );
@@ -101,14 +94,18 @@ export class VenueService {
   }
 
   async update(id: number, venueData: UpdateVenueDto): Promise<Venue> {
+    const { name, address, phoneNumber, email, drugstoreId } = venueData;
+
     const venue = await this.findById(id);
 
-    if (!venue) {
-      throw new NotFoundException('Venue not found');
-    }
-
     try {
-      await venue.update(venueData);
+      await venue.update({
+        name,
+        address,
+        phone_number: phoneNumber,
+        email,
+        drugstore_id: drugstoreId,
+      });
       return venue;
     } catch (error) {
       throw new InternalServerErrorException(

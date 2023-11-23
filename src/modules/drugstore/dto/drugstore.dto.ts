@@ -8,10 +8,10 @@ export class CreateDrugstoreDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly legal_name: string;
+  readonly legalName: string;
 
   @IsString()
-  readonly commercial_name: string;
+  readonly commercialName: string;
 
   @IsString()
   readonly logo: string;
