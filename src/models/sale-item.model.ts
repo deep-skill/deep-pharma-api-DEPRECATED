@@ -28,13 +28,13 @@ export class SaleItem extends Model {
   })
   id: number;
 
-  @Index({ name: 'fk_sale_items_products1_idx' })
-  @ForeignKey(() => Product)
-  @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
-  })
-  products_id: number;
+  // @Index({ name: 'fk_sale_items_products1_idx' })
+  // @ForeignKey(() => Product)
+  // @Column({
+  //   type: DataType.BIGINT,
+  //   allowNull: false,
+  // })
+  // products_id: number;
 
   @Column
   label: string;
@@ -58,6 +58,6 @@ export class SaleItem extends Model {
   @HasMany(() => StockItem)
   stock_items: StockItem[];
 
-  @BelongsTo(() => Product)
-  product: Product;
+  // @BelongsTo(() => Product)
+  // product: Product;
 }

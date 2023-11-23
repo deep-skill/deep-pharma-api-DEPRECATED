@@ -36,7 +36,7 @@ export class BrandService {
         paranoid: false,
       });
 
-      if (!brandFound) return new NotFoundException('Brand not found');
+      if (!brandFound) return new NotFoundException('Brand could not be found');
 
       return brandFound;
     } catch (error) {
@@ -85,6 +85,18 @@ export class BrandService {
       return new InternalServerErrorException(
         `Brand could not be deleted: ${error}`,
       );
+    }
+  }
+
+  async validateBrandId(id: number) {
+    try {
+      const brand = await this.brandModel.findByPk(id);
+
+      if (!brand) return false;
+      return true;
+    } catch (error) {
+      console.log(`There has been an error: ${error}`);
+      return false;
     }
   }
 }

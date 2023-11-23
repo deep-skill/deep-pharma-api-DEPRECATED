@@ -1,27 +1,27 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Tag } from 'src/models/tag.model';
 import { CreateTagDto, UpdateTagDto } from './dto/tag.dto';
 
 @Injectable()
 export class TagService {
-  constructor(
-    @InjectModel(Tag) private tagModel: typeof Tag,
-  ) {}
+  constructor(@InjectModel(Tag) private tagModel: typeof Tag) {}
 
   async findAll(includeDeleted: boolean) {
     try {
       if (includeDeleted) {
         return this.tagModel.findAll({
           paranoid: false,
-        })
+        });
       }
 
       return this.tagModel.findAll();
     } catch (error) {
-      return new InternalServerErrorException(
-        `Could not find tags: ${error}`,
-      );
+      return new InternalServerErrorException(`Could not find tags: ${error}`);
     }
   }
 
@@ -29,15 +29,13 @@ export class TagService {
     try {
       const tagFound = await this.tagModel.findOne({
         where: { id },
-      })
+      });
 
       if (!tagFound) return new NotFoundException('Tag not found');
 
       return tagFound;
     } catch (error) {
-      return new InternalServerErrorException(
-        `Could not find tag: ${error}`,
-      );
+      return new InternalServerErrorException(`Could not find tag: ${error}`);
     }
   }
 
@@ -46,7 +44,7 @@ export class TagService {
       return this.tagModel.create({
         name: tag.name,
         category: tag.category ?? null,
-      })
+      });
     } catch (error) {
       return new InternalServerErrorException(
         `Tag could not be created: ${error}`,
@@ -58,10 +56,9 @@ export class TagService {
     try {
       const [updatedRows] = await this.tagModel.update(tag, {
         where: { id },
-      })
+      });
 
-      if (updatedRows === 0) 
-        return new NotFoundException('Tag not found');
+      if (updatedRows === 0) return new NotFoundException('Tag not found');
 
       return this.findById(id);
     } catch (error) {
@@ -75,7 +72,7 @@ export class TagService {
     try {
       const deletedRows = await this.tagModel.destroy({
         where: { id },
-      })
+      });
 
       if (deletedRows === 0) return new NotFoundException('Tag not found');
 
@@ -86,6 +83,18 @@ export class TagService {
       );
     }
   }
+
+  async validateTagIds(tagIds: number[]) {
+    try {
+      for (const tagId of tagIds) {
+        const tag = await this.tagModel.findByPk(tagId);
+        if (!tag) return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.log(`There has been an error: ${error}`);
+      return false;
+    }
+  }
 }
-
-

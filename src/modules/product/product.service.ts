@@ -2,13 +2,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import {
   Injectable,
   InternalServerErrorException,
+  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { Product } from 'src/models/product.model';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductTag } from 'src/models/product-tag.model';
 import { TagService } from '../tag/tag.service';
-import { Tag } from 'src/models/tag.model';
+import { BrandService } from '../brand/brand.service';
 
 @Injectable()
 export class ProductService {
@@ -16,6 +17,7 @@ export class ProductService {
     @InjectModel(Product) private productModel: typeof Product,
     @InjectModel(ProductTag) private productTagModel: typeof ProductTag,
     private readonly tagService: TagService,
+    private readonly brandService: BrandService,
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -51,19 +53,32 @@ export class ProductService {
 
   async create(product: CreateProductDto) {
     try {
-      const tagFound = await this.tagService.findById(product.tagsId);
+      const { name, description, prescriptionRequired, brandId, tagIds } =
+        product;
+
+      const verifyBrandId = await this.brandService.validateBrandId(brandId);
+      if (!verifyBrandId)
+        return new BadRequestException(
+          'The brand id you have provided does not exit',
+        );
+
+      const verifyTagIds = await this.tagService.validateTagIds(tagIds);
+      if (!verifyTagIds)
+        return new BadRequestException(
+          'One or more of the tag ids you have provided does not exit',
+        );
 
       const productCreated = await this.productModel.create({
-        name: product.name,
-        description: product.description ?? null,
-        prescription_required: product.prescriptionRequired ?? 0,
-        brand_id: product.brandId,
+        name: name,
+        description: description ?? null,
+        prescription_required: prescriptionRequired ?? null,
+        brand_id: brandId,
       });
 
-      if (tagFound instanceof Tag) {
+      for (const tagId of tagIds) {
         await this.productTagModel.create({
           products_id: productCreated.id,
-          tags_id: tagFound.id,
+          tags_id: tagId,
         });
       }
 

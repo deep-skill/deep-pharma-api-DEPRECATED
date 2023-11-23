@@ -60,6 +60,6 @@ export class Product extends Model {
   @BelongsToMany(() => Tag, () => ProductTag)
   tags: Tag[];
 
-  @HasMany(() => SaleItem)
-  sale_items: SaleItem[];
+  // @HasMany(() => SaleItem)
+  // sale_items: SaleItem[];
 }

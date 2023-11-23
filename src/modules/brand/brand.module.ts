@@ -8,5 +8,6 @@ import { Brand } from 'src/models/brand.model';
   imports: [SequelizeModule.forFeature([Brand])],
   controllers: [BrandController],
   providers: [BrandService],
+  exports: [BrandService],
 })
 export class BrandModule {}
