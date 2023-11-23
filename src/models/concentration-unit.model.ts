@@ -19,6 +19,7 @@ export class ConcentrationUnit extends Model {
 
   @Column({
     allowNull: false,
+    unique: 'idx_concentration_units_name',
   })
   name: string;
 

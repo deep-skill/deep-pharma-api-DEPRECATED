@@ -4,6 +4,7 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  Index,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -39,6 +40,7 @@ export class Venue extends Model {
   email: string;
 
   @ForeignKey(() => Drugstore)
+  @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
