@@ -12,19 +12,15 @@ import {
 } from '@nestjs/common';
 import { StockItemsService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
+import { StockItem } from 'src/models/stock-item.model';
 
 @Controller('stock-item')
 export class StockItemsController {
   constructor(private readonly stockItemsService: StockItemsService) {}
 
   @Get()
-  getStockItems() {
-    return this.stockItemsService.findAll(false);
-  }
-
-  @Get()
-  getStockItemsIncludingDeleted(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  getStockItems(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
   ) {
     return this.stockItemsService.findAll(includeDeleted);
   }
@@ -32,6 +28,14 @@ export class StockItemsController {
   @Get(':id')
   getStockItemById(@Param('id', ParseIntPipe) id: number) {
     return this.stockItemsService.findById(id);
+  }
+
+  @Get(':foreignKey/:id')
+  getStockItemsByForeignKey(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('foreignKey') foreignKey: string,
+  ): Promise<StockItem[]> {
+    return this.stockItemsService.findByForeignKey(id, foreignKey);
   }
 
   @Post()

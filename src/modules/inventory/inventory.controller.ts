@@ -18,13 +18,8 @@ export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
   @Get()
-  getInventories() {
-    return this.inventoryService.findAll(false);
-  }
-
-  @Get()
-  getInventoriesIncludingDeleted(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  getInventories(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
   ) {
     return this.inventoryService.findAll(includeDeleted);
   }

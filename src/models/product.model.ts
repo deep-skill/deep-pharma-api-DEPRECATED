@@ -7,10 +7,12 @@ import {
   BelongsTo,
   Index,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 import { Brand } from './brand.model';
 import { Tag } from './tag.model';
 import { ProductTag } from './product-tag.model';
+import { SaleItem } from './sale-item.model';
 
 @Table({
   paranoid: true,
@@ -57,4 +59,7 @@ export class Product extends Model {
 
   @BelongsToMany(() => Tag, () => ProductTag)
   tags: Tag[];
+
+  @HasMany(() => SaleItem)
+  sale_items: SaleItem[];
 }

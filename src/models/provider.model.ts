@@ -1,9 +1,9 @@
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
-import { Supply_invoice } from './supply-invoice.model';
+import { SupplyInvoice } from './supply-invoice.model';
 
 @Table({
   paranoid: true,
-  tableName: 'Providers',
+  tableName: 'providers',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
@@ -29,6 +29,6 @@ export class Provider extends Model {
   })
   legal_name: string;
 
-  @HasMany(() => Supply_invoice)
-  supply_invoices: Supply_invoice;
+  @HasMany(() => SupplyInvoice)
+  supply_invoices: SupplyInvoice;
 }

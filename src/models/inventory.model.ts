@@ -8,12 +8,12 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Stock_item } from './stock-item.model';
+import { StockItem } from './stock-item.model';
 import { Venue } from './venue.model';
 
 @Table({
   paranoid: true,
-  tableName: 'Inventories',
+  tableName: 'inventories',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
@@ -41,6 +41,6 @@ export class Inventory extends Model {
   @BelongsTo(() => Venue)
   venue: Venue;
 
-  @HasMany(() => Stock_item)
-  stock_items: Stock_item[];
+  @HasMany(() => StockItem)
+  stock_items: StockItem[];
 }

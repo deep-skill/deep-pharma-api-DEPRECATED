@@ -18,13 +18,8 @@ export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
   @Get()
-  getBrands() {
-    return this.brandService.findAll(false);
-  }
-
-  @Get()
-  getBrandsIncludingDeleted(
-    @Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean,
+  getBrands(
+    @Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean = false,
   ) {
     return this.brandService.findAll(includeDeletd);
   }

@@ -4,7 +4,7 @@ import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateInventoryDto {
   @IsNotEmpty()
   @IsNumber()
-  venue_id: number;
+  venueId: number;
 
   @IsNotEmpty()
   @IsString()

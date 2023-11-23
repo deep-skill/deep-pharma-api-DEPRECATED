@@ -10,6 +10,9 @@ import { StockItemsModule } from './modules/stock-item/stock-item.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { DrugstoreModule } from './modules/drugstore/drugstore.module';
 import { VenueModule } from './modules/venue/venue.module';
+import { SaleItemModule } from './modules/sale-item/sale-item.module';
+import { ConcentrationUnitModule } from './modules/concentration-unit/concentration-unit.module';
+import databaseConfig from './config/database.config';
 import { ProviderModule } from './modules/provider/provider.module';
 import { SupplyInvoiceModule } from './modules/supply-invoice/supply-invoice.module';
 import { ProductModule } from './modules/product/product.module';
@@ -20,6 +23,7 @@ import { TagModule } from './modules/tag/tag.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [databaseConfig],
     }),
     RouterModule.register([
       {
@@ -34,6 +38,8 @@ import { TagModule } from './modules/tag/tag.module';
     DatabaseModule,
     DrugstoreModule,
     VenueModule,
+    SaleItemModule,
+    ConcentrationUnitModule,
     ProviderModule,
     SupplyInvoiceModule,
     ProductModule,

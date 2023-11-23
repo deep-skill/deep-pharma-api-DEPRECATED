@@ -37,7 +37,7 @@ export class Tag extends Model {
 
   @Index({
     type: 'FULLTEXT',
-    name: 'idx_tags_name',
+    name: 'idx_tags_category',
   })
   @Column({ type: DataType.STRING })
   category: string;

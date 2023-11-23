@@ -10,7 +10,7 @@ import { Product } from './product.model';
 import { Tag } from './tag.model';
 
 @Table({
-  tableName: 'Product_tags',
+  tableName: 'product_tags',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })

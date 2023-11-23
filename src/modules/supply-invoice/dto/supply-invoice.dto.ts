@@ -11,18 +11,18 @@ import { InvoiceType } from 'src/models/supply-invoice.model';
 export class CreateSupplyInvoiceDto {
   @IsEnum(InvoiceType)
   @IsNotEmpty()
-  invoice_type: InvoiceType;
+  invoiceType: InvoiceType;
 
   @IsNotEmpty()
   @IsString()
   code: string;
 
   @IsDateString()
-  delivered_at: Date;
+  deliveredAt: Date;
 
   @IsNotEmpty()
   @IsNumber()
-  provider_id: number;
+  providerId: number;
 }
 
 export class UpdateSupplyInvoiceDto extends PartialType(

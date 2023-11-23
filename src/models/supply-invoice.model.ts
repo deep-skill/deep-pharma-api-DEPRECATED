@@ -9,7 +9,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { Provider } from './provider.model';
-import { Stock_item } from './stock-item.model';
+import { StockItem } from './stock-item.model';
 
 export enum InvoiceType {
   RECEIPT = 'receipt',
@@ -18,12 +18,12 @@ export enum InvoiceType {
 
 @Table({
   paranoid: true,
-  tableName: 'Supply_invoices',
+  tableName: 'supply_invoices',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-export class Supply_invoice extends Model {
+export class SupplyInvoice extends Model {
   @Column({
     type: DataType.BIGINT,
     autoIncrement: true,
@@ -55,6 +55,6 @@ export class Supply_invoice extends Model {
   @BelongsTo(() => Provider)
   provider: Provider;
 
-  @HasMany(() => Stock_item)
-  stock_items: Stock_item[];
+  @HasMany(() => StockItem)
+  itock_items: StockItem[];
 }

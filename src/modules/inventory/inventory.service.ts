@@ -49,7 +49,7 @@ export class InventoryService {
   async create(inventory: CreateInventoryDto) {
     try {
       return this.inventoryModel.create({
-        venue_id: inventory.venue_id,
+        venue_id: inventory.venueId,
         name: inventory.name,
       });
     } catch (error) {

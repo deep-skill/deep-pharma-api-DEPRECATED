@@ -12,15 +12,15 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsNumber()
-  prescription_required?: number;
+  prescriptionRequired?: number;
 
   @IsNotEmpty()
   @IsNumber()
-  brand_id: number;
+  brandId: number;
 
   @IsNotEmpty()
   @IsNumber()
-  tag_id: number;
+  tagsId: number;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

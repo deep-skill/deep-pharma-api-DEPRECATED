@@ -21,13 +21,8 @@ export class SupplyInvoiceController {
   constructor(private readonly supplyInvoiceService: SupplyInvoiceService) {}
 
   @Get()
-  getSupplyInvoices() {
-    return this.supplyInvoiceService.findAll(false);
-  }
-
-  @Get()
-  getSupplyInvoicesIncludingDeleted(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
+  getSupplyInvoices(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
   ) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }

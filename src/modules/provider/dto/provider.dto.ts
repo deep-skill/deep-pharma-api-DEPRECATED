@@ -8,7 +8,7 @@ export class CreateProviderDto {
 
   @IsNotEmpty()
   @IsString()
-  legal_name: string;
+  legalName: string;
 }
 
 export class UpdateProviderDto extends PartialType(CreateProviderDto) {}

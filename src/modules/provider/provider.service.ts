@@ -48,7 +48,7 @@ export class ProviderService {
     try {
       return this.providerModel.create({
         RUC: provider.RUC,
-        legal_name: provider.legal_name,
+        legal_name: provider.legalName,
       });
     } catch (error) {
       return new InternalServerErrorException(

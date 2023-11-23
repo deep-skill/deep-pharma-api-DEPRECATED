@@ -51,13 +51,13 @@ export class ProductService {
 
   async create(product: CreateProductDto) {
     try {
-      const tagFound = await this.tagService.findById(product.tag_id);
+      const tagFound = await this.tagService.findById(product.tagsId);
 
       const productCreated = await this.productModel.create({
         name: product.name,
         description: product.description ?? null,
-        prescription_required: product.prescription_required ?? null,
-        brand_id: product.brand_id,
+        prescription_required: product.prescriptionRequired ?? 0,
+        brand_id: product.brandId,
       });
 
       if (tagFound instanceof Tag) {
