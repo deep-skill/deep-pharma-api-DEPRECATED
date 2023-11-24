@@ -18,7 +18,7 @@ import {
 
 import { ProviderService } from './provider.service';
 import { CreateProviderDto, UpdateProviderDto } from './dto/provider.dto';
-import { Provider } from 'src/models/provider.entity';
+import { Provider } from '@/modules/provider/entities/provider.entity';
 
 @ApiTags('provider')
 @Controller('provider')

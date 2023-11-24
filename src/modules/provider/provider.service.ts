@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Provider } from 'src/models/provider.entity';
+import { Provider } from '@/modules/provider/entities/provider.entity';
 import { CreateProviderDto, UpdateProviderDto } from './dto/provider.dto';
 
 @Injectable()

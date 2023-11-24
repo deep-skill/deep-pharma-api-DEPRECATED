@@ -1,20 +1,22 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateDrugstoreDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly RUC: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly legalName: string;
 
+  @IsOptional()
   @IsString()
-  readonly commercialName: string;
+  readonly commercialName?: string;
 
+  @IsOptional()
   @IsString()
-  readonly logo: string;
+  readonly logo?: string;
 }
 
 export class UpdateDrugstoreDto extends PartialType(CreateDrugstoreDto) {}

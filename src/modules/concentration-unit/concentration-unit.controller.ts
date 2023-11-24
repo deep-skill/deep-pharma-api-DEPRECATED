@@ -21,7 +21,7 @@ import {
   UpdateConcentrationUnitDto,
 } from './dto/concentration-unit.dto';
 import { ConcentrationUnitService } from './concentration-unit.service';
-import { ConcentrationUnit } from 'src/models/concentration-unit.entity';
+import { ConcentrationUnit } from '@/modules/concentration-unit/entities/concentration-unit.entity';
 
 @ApiTags('concentration-unit')
 @Controller('concentration-unit')

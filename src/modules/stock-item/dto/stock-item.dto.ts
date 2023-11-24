@@ -20,8 +20,8 @@ export class CreateStockItemDto {
   @IsNumber()
   sale_item_id: number;
 
-  @IsNumber()
   @IsNotEmpty()
+  @IsNumber()
   quantity: number;
 
   @IsOptional()

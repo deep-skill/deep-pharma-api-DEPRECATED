@@ -8,8 +8,8 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { StockItem } from './stock-item.entity';
-import { Venue } from './venue.entity';
+import { StockItem } from '../../stock-item/entities/stock-item.entity';
+import { Venue } from '../../venue/entities/venue.entity';
 
 @Table({
   paranoid: true,

@@ -1,19 +1,21 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateSaleItemDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly label: string;
 
+  @IsOptional()
   @IsString()
-  readonly description: string;
+  readonly description?: string;
 
+  @IsNotEmpty()
   @IsNumber()
   readonly concentration: number;
 
-  @IsNumber()
   @IsNotEmpty()
+  @IsNumber()
   readonly concentrationUnitId: number;
 }
 

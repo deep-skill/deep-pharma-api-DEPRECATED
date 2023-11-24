@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { SupplyInvoice } from 'src/models/supply-invoice.entity';
+import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 import {
   CreateSupplyInvoiceDto,
   UpdateSupplyInvoiceDto,

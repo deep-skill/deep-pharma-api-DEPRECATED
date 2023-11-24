@@ -8,8 +8,8 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Drugstore } from './drugstore.entity';
-import { Inventory } from './inventory.entity';
+import { Drugstore } from '../../drugstore/entities/drugstore.entity';
+import { Inventory } from '../../inventory/entities/inventory.entity';
 
 @Table({
   paranoid: true,

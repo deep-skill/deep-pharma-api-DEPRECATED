@@ -1,5 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { Venue } from './venue.entity';
+import { Venue } from '../../venue/entities/venue.entity';
 
 @Table({
   paranoid: true,
