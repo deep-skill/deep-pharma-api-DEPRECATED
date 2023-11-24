@@ -22,6 +22,6 @@ export class ConcentrationUnit extends Model {
   })
   name: string;
 
-  @HasMany(() => SaleItem)
-  SaleItems: SaleItem[];
+  // @HasMany(() => SaleItem)
+  // SaleItems: SaleItem[];
 }

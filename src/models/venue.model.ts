@@ -48,6 +48,6 @@ export class Venue extends Model {
   @BelongsTo(() => Drugstore)
   drugstore: Drugstore;
 
-  @HasMany(() => Inventory)
-  inventories: Inventory[];
+  // @HasMany(() => Inventory)
+  // inventories: Inventory[];
 }

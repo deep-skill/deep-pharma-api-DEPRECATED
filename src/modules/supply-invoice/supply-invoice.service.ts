@@ -9,12 +9,14 @@ import {
   CreateSupplyInvoiceDto,
   UpdateSupplyInvoiceDto,
 } from './dto/supply-invoice.dto';
+import { ProviderService } from '../provider/provider.service';
 
 @Injectable()
 export class SupplyInvoiceService {
   constructor(
     @InjectModel(SupplyInvoice)
     private supplyInvoiceModel: typeof SupplyInvoice,
+    private readonly providerService: ProviderService,
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -33,21 +35,20 @@ export class SupplyInvoiceService {
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<SupplyInvoice> {
     try {
-      const supplyInvoiceFound = await this.supplyInvoiceModel.findOne({
-        where: {
-          id,
-        },
+      const supplyInvoiceFound = await this.supplyInvoiceModel.findByPk(id, {
         paranoid: false,
       });
 
       if (!supplyInvoiceFound)
-        return new NotFoundException('Supply-invoice not found');
+        throw new NotFoundException(
+          "The supply invoice id provided wasn't found",
+        );
 
       return supplyInvoiceFound;
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Could not find supply-invoice: ${error}`,
       );
     }
@@ -55,11 +56,15 @@ export class SupplyInvoiceService {
 
   async create(supplyInvoice: CreateSupplyInvoiceDto) {
     try {
+      const { providerId, invoiceType, code, deliveredAt } = supplyInvoice;
+
+      await this.providerService.findById(providerId);
+
       return this.supplyInvoiceModel.create({
-        provider_id: supplyInvoice.providerId,
-        invoice_type: supplyInvoice.invoiceType,
-        code: supplyInvoice.code,
-        delivered_at: supplyInvoice.deliveredAt ?? null,
+        provider_id: providerId,
+        invoice_type: invoiceType,
+        code: code ?? null,
+        delivered_at: deliveredAt ?? null,
       });
     } catch (error) {
       return new InternalServerErrorException(
@@ -70,6 +75,10 @@ export class SupplyInvoiceService {
 
   async update(supplyInvoice: UpdateSupplyInvoiceDto, id: number) {
     try {
+      if (supplyInvoice.providerId) {
+        await this.providerService.findById(supplyInvoice.providerId);
+      }
+
       const [updatedRows] = await this.supplyInvoiceModel.update(
         supplyInvoice,
         {

@@ -27,18 +27,18 @@ export class ProviderService {
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Provider> {
     try {
-      const providerFound = await this.providerModel.findOne({
-        where: { id },
+      const providerFound = await this.providerModel.findByPk(id, {
         paranoid: false,
       });
 
-      if (!providerFound) return new NotFoundException('Provider not found');
+      if (!providerFound)
+        throw new NotFoundException("The provider id was't found");
 
       return providerFound;
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Could not find provider: ${error}`,
       );
     }

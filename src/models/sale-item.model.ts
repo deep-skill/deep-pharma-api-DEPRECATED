@@ -45,15 +45,15 @@ export class SaleItem extends Model {
   @Column
   concentration: number;
 
-  @ForeignKey(() => ConcentrationUnit)
-  @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
-  })
-  concentration_unit_id: number;
+  // @ForeignKey(() => ConcentrationUnit)
+  // @Column({
+  //   type: DataType.BIGINT,
+  //   allowNull: false,
+  // })
+  // concentration_unit_id: number;
 
-  @BelongsTo(() => ConcentrationUnit)
-  ConcentrationUnit: ConcentrationUnit;
+  // @BelongsTo(() => ConcentrationUnit)
+  // ConcentrationUnit: ConcentrationUnit;
 
   @HasMany(() => StockItem)
   stock_items: StockItem[];

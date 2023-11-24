@@ -31,23 +31,25 @@ export class BrandService {
 
   async findById(id: number) {
     try {
-      const brandFound = await this.brandModel.findOne({
-        where: { id },
+      const brandFound = await this.brandModel.findByPk(id, {
         paranoid: false,
       });
 
-      if (!brandFound) return new NotFoundException('Brand could not be found');
+      if (!brandFound)
+        throw new NotFoundException("The brand id provided wasn't fount");
 
       return brandFound;
     } catch (error) {
-      return new InternalServerErrorException(`Could not find brand: ${error}`);
+      throw new InternalServerErrorException(`Could not find brand: ${error}`);
     }
   }
 
   async create(brand: CreateBrandDto) {
     try {
+      const { name } = brand;
+
       return this.brandModel.create({
-        name: brand.name,
+        name: name,
       });
     } catch (error) {
       return new InternalServerErrorException(
@@ -85,18 +87,6 @@ export class BrandService {
       return new InternalServerErrorException(
         `Brand could not be deleted: ${error}`,
       );
-    }
-  }
-
-  async validateBrandId(id: number) {
-    try {
-      const brand = await this.brandModel.findByPk(id);
-
-      if (!brand) return false;
-      return true;
-    } catch (error) {
-      console.log(`There has been an error: ${error}`);
-      return false;
     }
   }
 }

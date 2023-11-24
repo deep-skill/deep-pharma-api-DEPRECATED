@@ -8,5 +8,6 @@ import { Inventory } from 'src/models/inventory.model';
   imports: [SequelizeModule.forFeature([Inventory])],
   controllers: [InventoryController],
   providers: [InventoryService],
+  exports: [InventoryService],
 })
 export class InventoryModule {}

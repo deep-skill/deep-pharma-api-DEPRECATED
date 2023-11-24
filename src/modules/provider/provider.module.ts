@@ -8,5 +8,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
   imports: [SequelizeModule.forFeature([Provider])],
   controllers: [ProviderController],
   providers: [ProviderService],
+  exports: [ProviderService],
 })
 export class ProviderModule {}

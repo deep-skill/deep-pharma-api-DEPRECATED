@@ -38,8 +38,7 @@ export class ProductService {
 
   async findById(id: number) {
     try {
-      const productFound = await this.productModel.findOne({
-        where: { id },
+      const productFound = await this.productModel.findByPk(id, {
         paranoid: false,
       });
 
@@ -56,17 +55,9 @@ export class ProductService {
       const { name, description, prescriptionRequired, brandId, tagIds } =
         product;
 
-      const verifyBrandId = await this.brandService.validateBrandId(brandId);
-      if (!verifyBrandId)
-        return new BadRequestException(
-          'The brand id you have provided does not exit',
-        );
+      await this.tagService.validateTagIds(tagIds);
 
-      const verifyTagIds = await this.tagService.validateTagIds(tagIds);
-      if (!verifyTagIds)
-        return new BadRequestException(
-          'One or more of the tag ids you have provided does not exit',
-        );
+      await this.brandService.findById(brandId);
 
       const productCreated = await this.productModel.create({
         name: name,
@@ -92,6 +83,14 @@ export class ProductService {
 
   async update(product: UpdateProductDto, id: number) {
     try {
+      if (product.tagIds) {
+        await this.tagService.validateTagIds(product.tagIds);
+      }
+
+      if (product.brandId) {
+        await this.brandService.findById(product.brandId);
+      }
+
       const [updatedRows] = await this.productModel.update(product, {
         where: { id },
       });

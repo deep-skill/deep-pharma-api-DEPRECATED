@@ -68,21 +68,25 @@ export class SaleItemService {
   }
 
   async create(saleItemData: CreateSaleItemDto) {
-    const { label, description, concentration, concentration_unit_id } =
-      saleItemData;
+    const {
+      label,
+      description,
+      concentration,
+      // concentration_unit_id
+    } = saleItemData;
 
-    const concentrationUnitExists =
-      await this.concentrationUnitService.findById(concentration_unit_id);
-    if (!concentrationUnitExists) {
-      throw new NotFoundException('Concentration unit does not exist');
-    }
+    // const concentrationUnitExists =
+    //   await this.concentrationUnitService.findById(concentration_unit_id);
+    // if (!concentrationUnitExists) {
+    //   throw new NotFoundException('Concentration unit does not exist');
+    // }
 
     try {
       const newSaleItem = await this.saleItemModel.create({
         label,
         description,
         concentration,
-        concentration_unit_id,
+        // concentration_unit_id,
       });
 
       return newSaleItem;
@@ -100,15 +104,15 @@ export class SaleItemService {
       throw new NotFoundException('Sale item not found');
     }
 
-    if (saleItemData.concentration_unit_id) {
-      const concentrationUnitExists =
-        await this.concentrationUnitService.findById(
-          saleItemData.concentration_unit_id,
-        );
-      if (!concentrationUnitExists) {
-        throw new NotFoundException('Concentration unit does not exist');
-      }
-    }
+    // if (saleItemData.concentration_unit_id) {
+    //   const concentrationUnitExists =
+    //     await this.concentrationUnitService.findById(
+    //       saleItemData.concentration_unit_id,
+    //     );
+    //   if (!concentrationUnitExists) {
+    //     throw new NotFoundException('Concentration unit does not exist');
+    //   }
+    // }
 
     try {
       await saleItem.update(saleItemData);

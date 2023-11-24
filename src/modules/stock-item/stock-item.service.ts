@@ -7,6 +7,9 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { StockItem } from 'src/models/stock-item.model';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
+import { InventoryService } from '../inventory/inventory.service';
+import { SupplyInvoiceService } from '../supply-invoice/supply-invoice.service';
+import { SaleItemService } from '../sale-item/sale-item.service';
 
 @Injectable()
 export class StockItemsService {
@@ -18,6 +21,9 @@ export class StockItemsService {
 
   constructor(
     @InjectModel(StockItem) private stockItemModel: typeof StockItem,
+    private readonly inventoryService: InventoryService,
+    private readonly supplyInvoiceService: SupplyInvoiceService,
+    private readonly saleItemService: SaleItemService,
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -38,14 +44,12 @@ export class StockItemsService {
 
   async findById(id: number) {
     try {
-      const stockItemFound = await this.stockItemModel.findOne({
-        where: {
-          id,
-        },
+      const stockItemFound = await this.stockItemModel.findByPk(id, {
         paranoid: false,
       });
 
-      if (!stockItemFound) return new NotFoundException('Stock-item not found');
+      if (!stockItemFound)
+        return new NotFoundException("The stock item id provided wann't found");
 
       return stockItemFound;
     } catch (error) {
@@ -88,13 +92,19 @@ export class StockItemsService {
     } = stockItem;
 
     try {
+      await this.inventoryService.findById(inventoryId);
+
+      await this.supplyInvoiceService.findById(supplyInvoiceId);
+
+      await this.saleItemService.findById(saleItemId);
+
       const createdItem = await this.stockItemModel.create({
         inventory_id: inventoryId,
-        supplyInvoiceId,
-        saleItemId,
-        quantity,
-        comment,
-        expiresAt,
+        supply_invoice_id: supplyInvoiceId,
+        sale_item_id: saleItemId,
+        quantity: quantity,
+        comment: comment,
+        expires_at: expiresAt,
       });
 
       return createdItem;
@@ -110,6 +120,18 @@ export class StockItemsService {
 
   async update(stockItem: UpdateStockItemDto, id: number) {
     try {
+      if (stockItem.inventoryId) {
+        await this.inventoryService.findById(stockItem.inventoryId);
+      }
+
+      if (stockItem.supplyInvoiceId) {
+        await this.supplyInvoiceService.findById(stockItem.supplyInvoiceId);
+      }
+
+      if (stockItem.saleItemId) {
+        await this.saleItemService.findById(stockItem.saleItemId);
+      }
+
       const [updatedRows] = await this.stockItemModel.update(stockItem, {
         where: {
           id,

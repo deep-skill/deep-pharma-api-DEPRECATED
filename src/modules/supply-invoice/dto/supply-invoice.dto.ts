@@ -4,7 +4,8 @@ import {
   IsNotEmpty,
   IsDateString,
   IsEnum,
-  IsNumber,
+  IsInt,
+  IsOptional,
 } from 'class-validator';
 import { InvoiceType } from 'src/models/supply-invoice.model';
 
@@ -17,11 +18,14 @@ export class CreateSupplyInvoiceDto {
   @IsString()
   code: string;
 
+  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   deliveredAt: Date;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsOptional()
+  @IsInt()
   providerId: number;
 }
 

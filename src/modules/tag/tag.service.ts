@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
+  HttpException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -27,8 +29,8 @@ export class TagService {
 
   async findById(id: number) {
     try {
-      const tagFound = await this.tagModel.findOne({
-        where: { id },
+      const tagFound = await this.tagModel.findByPk(id, {
+        paranoid: false,
       });
 
       if (!tagFound) return new NotFoundException('Tag not found');
@@ -41,9 +43,11 @@ export class TagService {
 
   async create(tag: CreateTagDto) {
     try {
+      const { name, category } = tag;
+
       return this.tagModel.create({
-        name: tag.name,
-        category: tag.category ?? null,
+        name: name,
+        category: category ?? null,
       });
     } catch (error) {
       return new InternalServerErrorException(
@@ -88,13 +92,16 @@ export class TagService {
     try {
       for (const tagId of tagIds) {
         const tag = await this.tagModel.findByPk(tagId);
-        if (!tag) return false;
+        if (!tag) {
+          throw new BadRequestException(
+            'One or more of the tag ids you have provided does not exit',
+          );
+        }
       }
 
       return true;
     } catch (error) {
-      console.log(`There has been an error: ${error}`);
-      return false;
+      throw new HttpException(error, 400);
     }
   }
 }
