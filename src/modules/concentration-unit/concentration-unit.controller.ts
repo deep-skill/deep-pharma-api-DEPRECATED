@@ -9,13 +9,21 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ConcentrationUnitService } from './concentration-unit.service';
-import { ConcentrationUnit } from 'src/models/concentration-unit.model';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+
 import {
   CreateConcentrationUnitDto,
   UpdateConcentrationUnitDto,
 } from './dto/concentration-unit.dto';
+import { ConcentrationUnitService } from './concentration-unit.service';
+import { ConcentrationUnit } from 'src/models/concentration-unit.entity';
 
+@ApiTags('concentration-unit')
 @Controller('concentration-unit')
 export class ConcentrationUnitController {
   constructor(
@@ -23,6 +31,13 @@ export class ConcentrationUnitController {
   ) {}
 
   @Get()
+  @ApiQuery({
+    name: 'includeDeleted',
+    required: false,
+    type: 'boolean',
+    description: 'Include deleted items',
+  })
+  @ApiOkResponse({ type: [ConcentrationUnit] })
   findAllConcentrationUnits(
     @Query('includeDeleted') includeDeleted = false,
   ): Promise<ConcentrationUnit[]> {
@@ -30,6 +45,7 @@ export class ConcentrationUnitController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: ConcentrationUnit })
   findConcentrationUnitById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ConcentrationUnit> {
@@ -37,6 +53,10 @@ export class ConcentrationUnitController {
   }
 
   @Post()
+  @ApiCreatedResponse({
+    type: ConcentrationUnit,
+    description: 'Create concentration unit',
+  })
   createConcentrationUnit(
     @Body() concentrationUnitData: CreateConcentrationUnitDto,
   ): Promise<ConcentrationUnit> {
@@ -44,6 +64,10 @@ export class ConcentrationUnitController {
   }
 
   @Put(':id')
+  @ApiOkResponse({
+    type: ConcentrationUnit,
+    description: 'Update concentration unit',
+  })
   updateConcentrationUnit(
     @Param('id', ParseIntPipe) id: number,
     @Body() concentrationUnitData: UpdateConcentrationUnitDto,
@@ -52,6 +76,10 @@ export class ConcentrationUnitController {
   }
 
   @Delete(':id')
+  @ApiOkResponse({
+    type: ConcentrationUnit,
+    description: 'Delete soft concentration unit',
+  })
   softDeleteConcentrationUnit(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ConcentrationUnit> {

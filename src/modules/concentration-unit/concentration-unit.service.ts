@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { ConcentrationUnit } from 'src/models/concentration-unit.model';
+import { ConcentrationUnit } from 'src/models/concentration-unit.entity';
 import {
   CreateConcentrationUnitDto,
   UpdateConcentrationUnitDto,

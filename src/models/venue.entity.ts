@@ -8,45 +8,48 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { ConcentrationUnit } from './concentration-unit.model';
-import { Stock_item } from './stock-item.model';
+import { Drugstore } from './drugstore.entity';
+import { Inventory } from './inventory.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'sale_items',
+  tableName: 'venues',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-export class SaleItem extends Model {
+export class Venue extends Model {
   @Column({
     type: DataType.BIGINT,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   })
   id: number;
 
   @Column
-  label: string;
+  name: string;
 
   @Column
-  description: string;
+  address: string;
 
   @Column
-  concentration: number;
+  phone_number: string;
 
-  @ForeignKey(() => ConcentrationUnit)
+  @Column
+  email: string;
+
+  @ForeignKey(() => Drugstore)
   @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
   })
-  concentration_unit_id: number;
+  drugstore_id: number;
 
-  @BelongsTo(() => ConcentrationUnit)
-  ConcentrationUnit: ConcentrationUnit;
+  @BelongsTo(() => Drugstore)
+  drugstore: Drugstore;
 
-  @HasMany(() => Stock_item)
-  stock_items: Stock_item[];
+  @HasMany(() => Inventory)
+  inventories: Inventory[];
 }

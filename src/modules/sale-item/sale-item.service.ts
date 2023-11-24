@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { SaleItem } from 'src/models/sale-item.model';
+import { SaleItem } from 'src/models/sale-item.entity';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
 import { ConcentrationUnitService } from '../concentration-unit/concentration-unit.service';
 
