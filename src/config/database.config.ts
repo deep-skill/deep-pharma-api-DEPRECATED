@@ -2,11 +2,8 @@ import { registerAs } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 import { isProduction } from '@/utils/constants';
 
-export default registerAs('config', () => {
+export default registerAs('databaseConfig', () => {
   return {
-    port: process.env.PORT,
-    auth0_url: process.env.ISSUER_BASE_URL,
-    auth0_audience: process.env.AUDIENCE,
     database: {
       dialect: 'mysql' as Dialect,
       host: process.env.DB_HOST,

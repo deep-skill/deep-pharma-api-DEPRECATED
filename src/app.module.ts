@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 
-import databaseConfig from './config/config';
+import databaseConfig from './config/database.config';
 import { AdminModule } from './admin/admin.module';
 import { ConcentrationUnitModule } from './modules/concentration-unit/concentration-unit.module';
 import { DatabaseModule } from './modules/database/database.module';
