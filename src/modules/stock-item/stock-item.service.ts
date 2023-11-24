@@ -5,7 +5,11 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+<<<<<<< HEAD
 import { StockItem } from 'src/models/stock-item.model';
+=======
+import { StockItem } from 'src/models/stock-item.entity';
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 import { InventoryService } from '../inventory/inventory.service';
 import { SupplyInvoiceService } from '../supply-invoice/supply-invoice.service';
@@ -21,9 +25,12 @@ export class StockItemsService {
 
   constructor(
     @InjectModel(StockItem) private stockItemModel: typeof StockItem,
+<<<<<<< HEAD
     private readonly inventoryService: InventoryService,
     private readonly supplyInvoiceService: SupplyInvoiceService,
     private readonly saleItemService: SaleItemService,
+=======
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -81,7 +88,7 @@ export class StockItemsService {
     }
   }
 
-  async create(stockItem: CreateStockItemDto) {
+  async create(stockItem: CreateStockItemDto): Promise<StockItem> {
     const {
       inventoryId,
       supplyInvoiceId,
@@ -112,7 +119,7 @@ export class StockItemsService {
       if (error.name === 'SequelizeForeignKeyConstraintError') {
         throw new BadRequestException(error.message);
       }
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Stock-item could not be created: ${error.message}`,
       );
     }

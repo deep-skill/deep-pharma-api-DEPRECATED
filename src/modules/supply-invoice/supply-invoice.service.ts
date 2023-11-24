@@ -4,7 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+<<<<<<< HEAD
 import { SupplyInvoice } from 'src/models/supply-invoice.model';
+=======
+import { SupplyInvoice } from 'src/models/supply-invoice.entity';
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
 import {
   CreateSupplyInvoiceDto,
   UpdateSupplyInvoiceDto,
@@ -16,7 +20,10 @@ export class SupplyInvoiceService {
   constructor(
     @InjectModel(SupplyInvoice)
     private supplyInvoiceModel: typeof SupplyInvoice,
+<<<<<<< HEAD
     private readonly providerService: ProviderService,
+=======
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -54,7 +61,7 @@ export class SupplyInvoiceService {
     }
   }
 
-  async create(supplyInvoice: CreateSupplyInvoiceDto) {
+  async create(supplyInvoice: CreateSupplyInvoiceDto): Promise<SupplyInvoice> {
     try {
       const { providerId, invoiceType, code, deliveredAt } = supplyInvoice;
 
@@ -67,7 +74,7 @@ export class SupplyInvoiceService {
         delivered_at: deliveredAt ?? null,
       });
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Supply-invoice could not be created: ${error}`,
       );
     }

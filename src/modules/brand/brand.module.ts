@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BrandController } from './brand.controller';
 import { BrandService } from './brand.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Brand } from 'src/models/brand.model';
+import { Brand } from 'src/models/brand.entity';
 
 @Module({
   imports: [SequelizeModule.forFeature([Brand])],

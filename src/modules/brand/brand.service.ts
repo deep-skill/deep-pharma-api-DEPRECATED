@@ -4,10 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Brand } from 'src/models/brand.model';
+import { Brand } from 'src/models/brand.entity';
 import { CreateBrandDto, UpdateBrandDto } from './dto/brand.dto';
-import { Product } from 'src/models/product.model';
-import { Tag } from 'src/models/tag.model';
+import { Product } from 'src/models/product.entity';
+import { Tag } from 'src/models/tag.entity';
 
 @Injectable()
 export class BrandService {

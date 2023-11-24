@@ -6,8 +6,8 @@ import {
   ForeignKey,
   Index,
 } from 'sequelize-typescript';
-import { Product } from './product.model';
-import { Tag } from './tag.model';
+import { Product } from './product.entity';
+import { Tag } from './tag.entity';
 
 @Table({
   tableName: 'product_tags',

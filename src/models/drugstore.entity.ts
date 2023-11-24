@@ -1,12 +1,5 @@
-import {
-  Column,
-  DataType,
-  HasMany,
-  Index,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { Venue } from './venue.model';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Venue } from './venue.entity';
 
 @Table({
   paranoid: true,
@@ -24,12 +17,10 @@ export class Drugstore extends Model {
   })
   id: number;
 
-  @Index('idx_drugstores_RUC_unique')
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, unique: 'idx_drugstore_RUC' })
   RUC: string;
 
-  @Index('idx_drugstore_legal_name_unique')
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, unique: 'idx_drugstore_legal_name' })
   legal_name: string;
 
   @Column

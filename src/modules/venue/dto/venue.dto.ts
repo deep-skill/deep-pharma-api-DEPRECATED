@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -17,7 +17,7 @@ export class CreateVenueDto {
 
   @IsString()
   @IsPhoneNumber()
-  readonly phone_number: string;
+  readonly phoneNumber: string;
 
   @IsString()
   @IsEmail()
@@ -25,7 +25,7 @@ export class CreateVenueDto {
 
   @IsNumber()
   @IsNotEmpty()
-  readonly drugstore_id: number;
+  readonly drugstoreId: number;
 }
 
 export class UpdateVenueDto extends PartialType(CreateVenueDto) {}

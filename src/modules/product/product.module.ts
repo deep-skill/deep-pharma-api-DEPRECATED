@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Product } from 'src/models/product.model';
-import { Tag } from 'src/models/tag.model';
-import { ProductTag } from 'src/models/product-tag.model';
+import { Product } from 'src/models/product.entity';
+import { Tag } from 'src/models/tag.entity';
+import { ProductTag } from 'src/models/product-tag.entity';
 import { TagModule } from '../tag/tag.module';
 import { BrandModule } from '../brand/brand.module';
 

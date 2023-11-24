@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { SaleItem } from 'src/models/sale-item.model';
+import { SaleItem } from 'src/models/sale-item.entity';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
 import { ConcentrationUnitService } from '../concentration-unit/concentration-unit.service';
 
@@ -72,21 +72,17 @@ export class SaleItemService {
       label,
       description,
       concentration,
-      // concentration_unit_id
+      // concentrationUnitId
     } = saleItemData;
 
-    // const concentrationUnitExists =
-    //   await this.concentrationUnitService.findById(concentration_unit_id);
-    // if (!concentrationUnitExists) {
-    //   throw new NotFoundException('Concentration unit does not exist');
-    // }
+    // await this.concentrationUnitService.findById(concentrationUnitId);
 
     try {
       const newSaleItem = await this.saleItemModel.create({
         label,
         description,
         concentration,
-        // concentration_unit_id,
+        // concentration_unit_id: concentrationUnitId,
       });
 
       return newSaleItem;
@@ -98,24 +94,26 @@ export class SaleItemService {
   }
 
   async update(id: number, saleItemData: UpdateSaleItemDto): Promise<SaleItem> {
+    const {
+      label,
+      description,
+      concentration,
+      // concentrationUnitId
+    } = saleItemData;
+
     const saleItem = await this.findById(id);
 
-    if (!saleItem) {
-      throw new NotFoundException('Sale item not found');
-    }
-
-    // if (saleItemData.concentration_unit_id) {
-    //   const concentrationUnitExists =
-    //     await this.concentrationUnitService.findById(
-    //       saleItemData.concentration_unit_id,
-    //     );
-    //   if (!concentrationUnitExists) {
-    //     throw new NotFoundException('Concentration unit does not exist');
-    //   }
+    // if (concentrationUnitId) {
+    //   await this.concentrationUnitService.findById(concentrationUnitId);
     // }
 
     try {
-      await saleItem.update(saleItemData);
+      await saleItem.update({
+        label,
+        description,
+        concentration,
+        // concentration_unit_id: concentrationUnitId,
+      });
       return saleItem;
     } catch (error) {
       throw new InternalServerErrorException(

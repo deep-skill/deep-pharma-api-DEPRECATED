@@ -1,5 +1,9 @@
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
+<<<<<<< HEAD:src/models/provider.model.ts
 import { SupplyInvoice } from './supply-invoice.model';
+=======
+import { SupplyInvoice } from './supply-invoice.entity';
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/provider.entity.ts
 
 @Table({
   paranoid: true,
@@ -30,5 +34,9 @@ export class Provider extends Model {
   legal_name: string;
 
   @HasMany(() => SupplyInvoice)
+<<<<<<< HEAD:src/models/provider.model.ts
   supply_invoices: SupplyInvoice;
+=======
+  SupplyInvoices: SupplyInvoice;
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/provider.entity.ts
 }

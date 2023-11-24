@@ -9,10 +9,10 @@ import {
   BelongsToMany,
   HasMany,
 } from 'sequelize-typescript';
-import { Brand } from './brand.model';
-import { Tag } from './tag.model';
-import { ProductTag } from './product-tag.model';
-import { SaleItem } from './sale-item.model';
+import { Brand } from './brand.entity';
+import { Tag } from './tag.entity';
+import { ProductTag } from './product-tag.entity';
+import { SaleItem } from './sale-item.entity';
 
 @Table({
   paranoid: true,

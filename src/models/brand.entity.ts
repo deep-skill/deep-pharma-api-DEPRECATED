@@ -8,7 +8,7 @@ import {
   Index,
   HasMany,
 } from 'sequelize-typescript';
-import { Product } from './product.model';
+import { Product } from './product.entity';
 
 @Table({
   paranoid: true,

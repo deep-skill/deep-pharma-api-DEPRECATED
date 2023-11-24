@@ -9,15 +9,30 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+
 import { DrugstoreService } from './drugstore.service';
-import { Drugstore } from 'src/models/drugstore.model';
+import { Drugstore } from 'src/models/drugstore.entity';
 import { CreateDrugstoreDto, UpdateDrugstoreDto } from './dto/drugstore.dto';
 
+@ApiTags('drugstore')
 @Controller('drugstore')
 export class DrugstoreController {
   constructor(private readonly drugstoreService: DrugstoreService) {}
 
   @Get()
+  @ApiQuery({
+    name: 'includeDeleted',
+    required: false,
+    type: 'boolean',
+    description: 'Include deleted items',
+  })
+  @ApiOkResponse({ type: [Drugstore] })
   async getAllDrugstores(
     @Query('includeDeleted') includeDeleted = false,
   ): Promise<Drugstore[]> {
@@ -25,6 +40,7 @@ export class DrugstoreController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: Drugstore })
   async getDrugstoreById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Drugstore> {
@@ -32,6 +48,10 @@ export class DrugstoreController {
   }
 
   @Post()
+  @ApiCreatedResponse({
+    type: Drugstore,
+    description: 'Create drugstore',
+  })
   async createDrugstore(
     @Body() drugstoreData: CreateDrugstoreDto,
   ): Promise<Drugstore> {
@@ -39,6 +59,10 @@ export class DrugstoreController {
   }
 
   @Put(':id')
+  @ApiOkResponse({
+    type: Drugstore,
+    description: 'Update drugstore',
+  })
   async updateDrugstore(
     @Param('id', ParseIntPipe) id: number,
     @Body() drugstoreData: UpdateDrugstoreDto,
@@ -47,6 +71,10 @@ export class DrugstoreController {
   }
 
   @Delete(':id')
+  @ApiOkResponse({
+    type: Drugstore,
+    description: 'Delete soft drugstore',
+  })
   async softDeleteDrugstore(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Drugstore> {

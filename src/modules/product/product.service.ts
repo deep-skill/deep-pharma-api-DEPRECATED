@@ -5,9 +5,9 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { Product } from 'src/models/product.model';
+import { Product } from 'src/models/product.entity';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
-import { ProductTag } from 'src/models/product-tag.model';
+import { ProductTag } from 'src/models/product-tag.entity';
 import { TagService } from '../tag/tag.service';
 import { BrandService } from '../brand/brand.service';
 

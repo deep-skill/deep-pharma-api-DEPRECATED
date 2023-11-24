@@ -1,10 +1,11 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { ConcentrationUnit } from 'src/models/concentration-unit.model';
+import { ConcentrationUnit } from 'src/models/concentration-unit.entity';
 import {
   CreateConcentrationUnitDto,
   UpdateConcentrationUnitDto,
@@ -52,15 +53,21 @@ export class ConcentrationUnitService {
   }
 
   async create(concentrationUnitData: CreateConcentrationUnitDto) {
-    const { name } = concentrationUnitData;
-
     try {
-      const newConcentrationUnit = this.ConcentrationUnitModel.create({
+      const { name } = concentrationUnitData;
+
+      const newConcentrationUnit = await this.ConcentrationUnitModel.create({
         name,
       });
 
       return newConcentrationUnit;
     } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        throw new ConflictException(
+          'Concentration unit with this name already exists',
+        );
+      }
+
       throw new InternalServerErrorException(
         `Failed to create concentration unit: ${error.message}`,
       );
@@ -72,10 +79,6 @@ export class ConcentrationUnitService {
     concentrationUnitData: UpdateConcentrationUnitDto,
   ): Promise<ConcentrationUnit> {
     const concentrationUnit = await this.findById(id);
-
-    if (!concentrationUnit) {
-      throw new NotFoundException('Concentration unit not found');
-    }
 
     try {
       await concentrationUnit.update(concentrationUnitData);

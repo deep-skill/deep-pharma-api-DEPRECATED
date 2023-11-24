@@ -8,8 +8,13 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
+<<<<<<< HEAD:src/models/supply-invoice.model.ts
 import { Provider } from './provider.model';
 import { StockItem } from './stock-item.model';
+=======
+import { Provider } from './provider.entity';
+import { StockItem } from './stock-item.entity';
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/supply-invoice.entity.ts
 
 export enum InvoiceType {
   RECEIPT = 'receipt',
@@ -56,5 +61,9 @@ export class SupplyInvoice extends Model {
   provider: Provider;
 
   @HasMany(() => StockItem)
+<<<<<<< HEAD:src/models/supply-invoice.model.ts
   itock_items: StockItem[];
+=======
+  StockItems: StockItem[];
+>>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/supply-invoice.entity.ts
 }
