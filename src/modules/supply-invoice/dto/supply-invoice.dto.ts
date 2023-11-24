@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
@@ -6,7 +6,7 @@ import {
   IsEnum,
   IsNumber,
 } from 'class-validator';
-import { InvoiceType } from 'src/models/supply-invoice.model';
+import { InvoiceType } from 'src/models/supply-invoice.entity';
 
 export class CreateSupplyInvoiceDto {
   @IsEnum(InvoiceType)

@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as nocache from 'nocache';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { setupSwagger } from './swagger';
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVariables = ['PORT', 'ISSUER_BASE_URL', 'AUDIENCE'];
@@ -16,9 +18,6 @@ function checkEnvironment(configService: ConfigService) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  const configService = app.get<ConfigService>(ConfigService);
-  checkEnvironment(configService);
 
   app.use(nocache());
 
@@ -35,6 +34,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  const configService = app.get<ConfigService>(ConfigService);
+  checkEnvironment(configService);
+
+  setupSwagger(app);
 
   await app.listen(configService.get<string>('PORT'));
 }

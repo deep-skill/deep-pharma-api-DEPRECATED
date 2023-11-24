@@ -4,11 +4,12 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  Index,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { ConcentrationUnit } from './concentration-unit.model';
-import { Stock_item } from './stock-item.model';
+import { ConcentrationUnit } from './concentration-unit.entity';
+import { StockItem } from './stock-item.entity';
 
 @Table({
   paranoid: true,
@@ -36,6 +37,7 @@ export class SaleItem extends Model {
   concentration: number;
 
   @ForeignKey(() => ConcentrationUnit)
+  @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
@@ -45,6 +47,6 @@ export class SaleItem extends Model {
   @BelongsTo(() => ConcentrationUnit)
   ConcentrationUnit: ConcentrationUnit;
 
-  @HasMany(() => Stock_item)
-  stock_items: Stock_item[];
+  @HasMany(() => StockItem)
+  StockItems: StockItem[];
 }

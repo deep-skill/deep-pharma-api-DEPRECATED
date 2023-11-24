@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Drugstore } from 'src/models/drugstore.model';
+import { Drugstore } from 'src/models/drugstore.entity';
 import { CreateDrugstoreDto, UpdateDrugstoreDto } from './dto/drugstore.dto';
 
 @Injectable()
@@ -33,7 +33,9 @@ export class DrugstoreService {
   }
 
   async findById(id: number): Promise<Drugstore> {
-    const drugstore = await this.drugstoreModel.findByPk(id);
+    const drugstore = await this.drugstoreModel.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!drugstore) {
       throw new NotFoundException('Drugstore not found');
@@ -49,12 +51,12 @@ export class DrugstoreService {
 
   async create(drugstoreData: CreateDrugstoreDto): Promise<Drugstore> {
     try {
-      const { RUC, legal_name, commercial_name, logo } = drugstoreData;
+      const { RUC, legalName, commercialName, logo } = drugstoreData;
 
       const newDrugstore = await this.drugstoreModel.create({
         RUC,
-        legal_name,
-        commercial_name,
+        legal_name: legalName,
+        commercial_name: commercialName,
         logo,
       });
 
@@ -65,6 +67,7 @@ export class DrugstoreService {
           'Drugstore with this legal name or RUC already exists',
         );
       }
+
       throw new InternalServerErrorException(
         `Failed to create drugstore: ${error.message}`,
       );
@@ -82,7 +85,14 @@ export class DrugstoreService {
     }
 
     try {
-      await drugstore.update(drugstoreData);
+      const { RUC, legalName, commercialName, logo } = drugstoreData;
+
+      await drugstore.update({
+        RUC,
+        legal_name: legalName,
+        commercial_name: commercialName,
+        logo,
+      });
       return drugstore;
     } catch (error) {
       throw new InternalServerErrorException(

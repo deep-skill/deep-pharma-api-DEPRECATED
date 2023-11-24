@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateDrugstoreDto {
@@ -8,10 +8,10 @@ export class CreateDrugstoreDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly legal_name: string;
+  readonly legalName: string;
 
   @IsString()
-  readonly commercial_name: string;
+  readonly commercialName: string;
 
   @IsString()
   readonly logo: string;

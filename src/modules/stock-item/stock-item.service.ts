@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Stock_item } from 'src/models/stock-item.model';
+import { StockItem } from 'src/models/stock-item.entity';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class StockItemsService {
   };
 
   constructor(
-    @InjectModel(Stock_item) private stockItemModel: typeof Stock_item,
+    @InjectModel(StockItem) private stockItemModel: typeof StockItem,
   ) {}
 
   async findAll(includeDeleted: boolean) {
@@ -55,10 +55,7 @@ export class StockItemsService {
     }
   }
 
-  async findByForeignKey(
-    id: number,
-    foreignKey: string,
-  ): Promise<Stock_item[]> {
+  async findByForeignKey(id: number, foreignKey: string): Promise<StockItem[]> {
     const mappedForeignKey = this.foreignKeyMap[foreignKey];
 
     if (!mappedForeignKey) {
@@ -80,7 +77,7 @@ export class StockItemsService {
     }
   }
 
-  async create(stockItem: CreateStockItemDto) {
+  async create(stockItem: CreateStockItemDto): Promise<StockItem> {
     const {
       inventory_id,
       supply_invoice_id,
@@ -105,7 +102,7 @@ export class StockItemsService {
       if (error.name === 'SequelizeForeignKeyConstraintError') {
         throw new BadRequestException(error.message);
       }
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Stock-item could not be created: ${error.message}`,
       );
     }

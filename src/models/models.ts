@@ -1,11 +1,11 @@
-import { ConcentrationUnit } from './concentration-unit.model';
-import { Drugstore } from './drugstore.model';
-import { Inventory } from './inventory.model';
-import { Provider } from './provider.model';
-import { SaleItem } from './sale-item.model';
-import { Stock_item } from './stock-item.model';
-import { Supply_invoice } from './supply-invoice.model';
-import { Venue } from './venue.model';
+import { ConcentrationUnit } from './concentration-unit.entity';
+import { Drugstore } from './drugstore.entity';
+import { Inventory } from './inventory.entity';
+import { Provider } from './provider.entity';
+import { SaleItem } from './sale-item.entity';
+import { StockItem } from './stock-item.entity';
+import { SupplyInvoice } from './supply-invoice.entity';
+import { Venue } from './venue.entity';
 
 export const models = [
   ConcentrationUnit,
@@ -13,7 +13,7 @@ export const models = [
   Inventory,
   Provider,
   SaleItem,
-  Stock_item,
-  Supply_invoice,
+  StockItem,
+  SupplyInvoice,
   Venue,
 ];

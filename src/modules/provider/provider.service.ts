@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Provider } from 'src/models/provider.model';
+import { Provider } from 'src/models/provider.entity';
 import { CreateProviderDto, UpdateProviderDto } from './dto/provider.dto';
 
 @Injectable()
@@ -44,14 +44,14 @@ export class ProviderService {
     }
   }
 
-  async create(provider: CreateProviderDto) {
+  async create(provider: CreateProviderDto): Promise<Provider> {
     try {
       return this.providerModel.create({
         RUC: provider.RUC,
         legal_name: provider.legal_name,
       });
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Provider could not be created: ${error}`,
       );
     }
