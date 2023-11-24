@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Inventory } from 'src/models/inventory.entity';
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 
 @Injectable()

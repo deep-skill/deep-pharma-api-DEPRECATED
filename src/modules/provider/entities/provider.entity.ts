@@ -1,5 +1,5 @@
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
-import { SupplyInvoice } from './supply-invoice.entity';
+import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
 
 @Table({
   paranoid: true,

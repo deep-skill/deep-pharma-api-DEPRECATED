@@ -3,28 +3,32 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
 
 export class CreateVenueDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   readonly name: string;
 
+  @IsOptional()
   @IsString()
-  readonly address: string;
+  readonly address?: string;
 
+  @IsOptional()
   @IsString()
   @IsPhoneNumber()
-  readonly phoneNumber: string;
+  readonly phoneNumber?: string;
 
+  @IsOptional()
   @IsString()
   @IsEmail()
-  readonly email: string;
+  readonly email?: string;
 
-  @IsNumber()
   @IsNotEmpty()
+  @IsNumber()
   readonly drugstoreId: number;
 }
 

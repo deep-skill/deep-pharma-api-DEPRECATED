@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { StockItem } from 'src/models/stock-item.entity';
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 
 @Injectable()

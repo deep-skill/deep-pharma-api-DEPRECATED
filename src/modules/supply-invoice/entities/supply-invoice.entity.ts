@@ -8,8 +8,8 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { Provider } from './provider.entity';
-import { StockItem } from './stock-item.entity';
+import { Provider } from '../../provider/entities/provider.entity';
+import { StockItem } from '../../stock-item/entities/stock-item.entity';
 
 export enum InvoiceType {
   RECEIPT = 'receipt',

@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { DrugstoreService } from './drugstore.service';
-import { Drugstore } from 'src/models/drugstore.entity';
+import { Drugstore } from '@/modules/drugstore/entities/drugstore.entity';
 import { CreateDrugstoreDto, UpdateDrugstoreDto } from './dto/drugstore.dto';
 
 @ApiTags('drugstore')

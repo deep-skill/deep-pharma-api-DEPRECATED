@@ -18,7 +18,7 @@ import {
 
 import { InventoryService } from './inventory.service';
 import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
-import { Inventory } from 'src/models/inventory.entity';
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 
 @ApiTags('inventory')
 @Controller('inventory')

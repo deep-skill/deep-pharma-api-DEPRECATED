@@ -8,9 +8,9 @@ import {
   BelongsTo,
   Index,
 } from 'sequelize-typescript';
-import { Inventory } from './inventory.entity';
-import { SupplyInvoice } from './supply-invoice.entity';
-import { SaleItem } from './sale-item.entity';
+import { Inventory } from '../../inventory/entities/inventory.entity';
+import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
+import { SaleItem } from '../../sale-item/entities/sale-item.entity';
 
 @Table({
   paranoid: true,

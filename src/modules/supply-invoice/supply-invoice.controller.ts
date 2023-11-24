@@ -21,7 +21,7 @@ import {
   UpdateSupplyInvoiceDto,
 } from './dto/supply-invoice.dto';
 import { SupplyInvoiceService } from './supply-invoice.service';
-import { SupplyInvoice } from 'src/models/supply-invoice.entity';
+import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 
 @ApiTags('supply-invoice')
 @Controller('supply-invoice')

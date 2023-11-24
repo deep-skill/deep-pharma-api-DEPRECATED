@@ -19,7 +19,7 @@ import {
 
 import { StockItemsService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
-import { StockItem } from 'src/models/stock-item.entity';
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 
 @ApiTags('stock-item')
 @Controller('stock-item')

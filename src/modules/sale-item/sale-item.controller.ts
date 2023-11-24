@@ -18,7 +18,7 @@ import {
 
 import { SaleItemService } from './sale-item.service';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
-import { SaleItem } from 'src/models/sale-item.entity';
+import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
 
 @ApiTags('sale-item')
 @Controller('sale-item')

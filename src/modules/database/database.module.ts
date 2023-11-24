@@ -1,27 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import databaseConfig from 'src/config/database.config';
-import { models } from 'src/models/models';
+import config from '@/config/config';
+import { models } from '@/modules/database/models';
 
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
-      inject: [databaseConfig.KEY],
-      useFactory: (configService: ConfigType<typeof databaseConfig>) => {
-        const { host, port, username, password, database } = configService;
-
-        return {
-          dialect: 'mysql',
-          host,
-          port,
-          username,
-          password,
-          database,
-          models,
-          autoLoadModels: true,
-          synchronize: true,
-        };
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => {
+        return { ...configService.database, models };
       },
     }),
   ],

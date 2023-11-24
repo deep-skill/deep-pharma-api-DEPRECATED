@@ -1,10 +1,10 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as nocache from 'nocache';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { setupSwagger } from './swagger';
+
+import { AppModule } from '@/app.module';
+import { setupSwagger } from '@/swagger';
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVariables = ['PORT', 'ISSUER_BASE_URL', 'AUDIENCE'];

@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Venue } from 'src/models/venue.entity';
+import { Venue } from '@/modules/venue/entities/venue.entity';
 import { CreateVenueDto, UpdateVenueDto } from './dto/venue.dto';
 import { DrugstoreService } from '../drugstore/drugstore.service';
 
