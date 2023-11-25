@@ -72,9 +72,15 @@ export class VenueService {
   }
 
   async create(venueData: CreateVenueDto): Promise<Venue> {
-    const { name, address, phoneNumber, email, drugstoreId } = venueData;
+    const {
+      name,
+      address,
+      phoneNumber,
+      email,
+      // drugstoreId
+    } = venueData;
 
-    await this.drugstoreService.findById(drugstoreId);
+    // await this.drugstoreService.findById(drugstoreId);
 
     try {
       const newVenue = await this.venueModel.create({
@@ -82,7 +88,7 @@ export class VenueService {
         address,
         phone_number: phoneNumber,
         email,
-        drugstore_id: drugstoreId,
+        // drugstore_id: drugstoreId,
       });
 
       return newVenue;
@@ -94,7 +100,13 @@ export class VenueService {
   }
 
   async update(id: number, venueData: UpdateVenueDto): Promise<Venue> {
-    const { name, address, phoneNumber, email, drugstoreId } = venueData;
+    const {
+      name,
+      address,
+      phoneNumber,
+      email,
+      // drugstoreId
+    } = venueData;
 
     const venue = await this.findById(id);
 
@@ -104,7 +116,7 @@ export class VenueService {
         address,
         phone_number: phoneNumber,
         email,
-        drugstore_id: drugstoreId,
+        // drugstore_id: drugstoreId,
       });
       return venue;
     } catch (error) {

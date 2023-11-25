@@ -13,7 +13,7 @@ import { CreateTagDto, UpdateTagDto } from './dto/tag.dto';
 export class TagService {
   constructor(@InjectModel(Tag) private tagModel: typeof Tag) {}
 
-  async findAll(includeDeleted: boolean) {
+  async findAll(includeDeleted: boolean): Promise<Tag[]> {
     try {
       if (includeDeleted) {
         return this.tagModel.findAll({
@@ -23,25 +23,25 @@ export class TagService {
 
       return this.tagModel.findAll();
     } catch (error) {
-      return new InternalServerErrorException(`Could not find tags: ${error}`);
+      throw new InternalServerErrorException(`Could not find tags: ${error}`);
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Tag> {
     try {
       const tagFound = await this.tagModel.findByPk(id, {
         paranoid: false,
       });
 
-      if (!tagFound) return new NotFoundException('Tag not found');
+      if (!tagFound) throw new NotFoundException('Tag not found');
 
       return tagFound;
     } catch (error) {
-      return new InternalServerErrorException(`Could not find tag: ${error}`);
+      throw new InternalServerErrorException(`Could not find tag: ${error}`);
     }
   }
 
-  async create(tag: CreateTagDto) {
+  async create(tag: CreateTagDto): Promise<Tag> {
     try {
       const { name, category } = tag;
 
@@ -50,39 +50,39 @@ export class TagService {
         category: category ?? null,
       });
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Tag could not be created: ${error}`,
       );
     }
   }
 
-  async update(tag: UpdateTagDto, id: number) {
+  async update(tag: UpdateTagDto, id: number): Promise<Tag> {
     try {
       const [updatedRows] = await this.tagModel.update(tag, {
         where: { id },
       });
 
-      if (updatedRows === 0) return new NotFoundException('Tag not found');
+      if (updatedRows === 0) throw new NotFoundException('Tag not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Tag could not be updated: ${error}`,
       );
     }
   }
 
-  async softDelete(id: number) {
+  async softDelete(id: number): Promise<Tag> {
     try {
       const deletedRows = await this.tagModel.destroy({
         where: { id },
       });
 
-      if (deletedRows === 0) return new NotFoundException('Tag not found');
+      if (deletedRows === 0) throw new NotFoundException('Tag not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Tag could not be deleted: ${error}`,
       );
     }

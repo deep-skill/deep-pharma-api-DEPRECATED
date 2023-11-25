@@ -25,17 +25,19 @@ import { Provider } from 'src/models/provider.entity';
 @Controller('provider')
 export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
+  // @ApiQuery({
+  //   name: 'includeDeleted',
+  //   required: false,
+  //   type: 'boolean',
+  //   description: 'Include deleted providers',
+  // })
+  // @ApiOkResponse({ type: [Provider] })
 
   @Get()
-  @ApiQuery({
-    name: 'includeDeleted',
-    required: false,
-    type: 'boolean',
-    description: 'Include deleted items',
-  })
-  @ApiOkResponse({ type: [Provider] })
-  getAllProviders(@Query('includeDeleted') includeDeleted: boolean = false) {
-    return this.providerService.findAll(includeDeleted);
+  getAllProviders(
+    // @Query('includeDeleted') includeDeleted: boolean = false
+  ) {
+    return this.providerService.findAll(false);
   }
 
   @Get(':id')

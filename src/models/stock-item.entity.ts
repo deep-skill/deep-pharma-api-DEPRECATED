@@ -8,15 +8,9 @@ import {
   BelongsTo,
   Index,
 } from 'sequelize-typescript';
-<<<<<<< HEAD:src/models/stock-item.model.ts
-import { Inventory } from './inventory.model';
-import { SupplyInvoice } from './supply-invoice.model';
-import { SaleItem } from './sale-item.model';
-=======
 import { Inventory } from './inventory.entity';
 import { SupplyInvoice } from './supply-invoice.entity';
 import { SaleItem } from './sale-item.entity';
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/stock-item.entity.ts
 
 @Table({
   paranoid: true,
@@ -42,11 +36,7 @@ export class StockItem extends Model {
   })
   inventory_id: number;
 
-<<<<<<< HEAD:src/models/stock-item.model.ts
-  @Index({ name: 'fk_stock_items_supply_invoices1_idx' })
-=======
   @Index({ name: 'fk_stock_items_SupplyInvoices1_idx' })
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/stock-item.entity.ts
   @ForeignKey(() => SupplyInvoice)
   @Column({
     type: DataType.BIGINT,
@@ -85,11 +75,7 @@ export class StockItem extends Model {
   inventory: Inventory;
 
   @BelongsTo(() => SupplyInvoice)
-<<<<<<< HEAD:src/models/stock-item.model.ts
-  supply_invoice: SupplyInvoice;
-=======
   SupplyInvoice: SupplyInvoice;
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1:src/models/stock-item.entity.ts
 
   @BelongsTo(() => SaleItem)
   sale_item: SaleItem;

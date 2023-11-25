@@ -20,38 +20,36 @@ import {
 
 import { StockItemsService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
-<<<<<<< HEAD
-import { StockItem } from 'src/models/stock-item.model';
-=======
 import { StockItem } from 'src/models/stock-item.entity';
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
 
-@ApiTags('stock-item')
+// @ApiTags('stock-item')
 @Controller('stock-item')
 export class StockItemsController {
   constructor(private readonly stockItemsService: StockItemsService) {}
 
   @Get()
-<<<<<<< HEAD
-  getStockItems(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
-  ) {
-=======
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
     type: 'boolean',
-    description: 'Include deleted items',
+    description: 'Include deleted stock items',
   })
   @ApiOkResponse({ type: [StockItem] })
-  getAllStockItems(@Query('includeDeleted') includeDeleted: boolean) {
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
+  getAllStockItems(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
+  ): Promise<StockItem[]> {
     return this.stockItemsService.findAll(includeDeleted);
   }
 
   @Get(':id')
   @ApiOkResponse({ type: StockItem })
-  getStockItemById(@Param('id', ParseIntPipe) id: number) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'string',
+    description: 'Find by stock item id',
+  })
+  getStockItemById(@Param('id', ParseIntPipe) id: number): Promise<StockItem> {
     return this.stockItemsService.findById(id);
   }
 
@@ -97,7 +95,7 @@ export class StockItemsController {
   updateStockItem(
     @Body() stockItem: UpdateStockItemDto,
     @Param('id', ParseIntPipe) id: number,
-  ) {
+  ): Promise<StockItem> {
     return this.stockItemsService.update(stockItem, id);
   }
 
@@ -106,7 +104,9 @@ export class StockItemsController {
     type: StockItem,
     description: 'Delete soft stock item',
   })
-  softDeleteStockItem(@Param('id', ParseIntPipe) id: number) {
+  softDeleteStockItem(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StockItem> {
     return this.stockItemsService.softDelete(id);
   }
 }

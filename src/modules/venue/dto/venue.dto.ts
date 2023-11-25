@@ -23,9 +23,9 @@ export class CreateVenueDto {
   @IsEmail()
   readonly email: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  readonly drugstoreId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // readonly drugstoreId: number;
 }
 
 export class UpdateVenueDto extends PartialType(CreateVenueDto) {}

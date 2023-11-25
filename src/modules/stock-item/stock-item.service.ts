@@ -5,11 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-<<<<<<< HEAD
-import { StockItem } from 'src/models/stock-item.model';
-=======
 import { StockItem } from 'src/models/stock-item.entity';
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 import { InventoryService } from '../inventory/inventory.service';
 import { SupplyInvoiceService } from '../supply-invoice/supply-invoice.service';
@@ -25,15 +21,12 @@ export class StockItemsService {
 
   constructor(
     @InjectModel(StockItem) private stockItemModel: typeof StockItem,
-<<<<<<< HEAD
     private readonly inventoryService: InventoryService,
     private readonly supplyInvoiceService: SupplyInvoiceService,
     private readonly saleItemService: SaleItemService,
-=======
->>>>>>> c11114c534e5c022d3311f72964051daa0dfb7f1
   ) {}
 
-  async findAll(includeDeleted: boolean) {
+  async findAll(includeDeleted: boolean): Promise<StockItem[]> {
     try {
       if (includeDeleted) {
         return this.stockItemModel.findAll({
@@ -43,24 +36,24 @@ export class StockItemsService {
 
       return this.stockItemModel.findAll();
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Could not find stock-items: ${error.messages}`,
       );
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<StockItem> {
     try {
       const stockItemFound = await this.stockItemModel.findByPk(id, {
         paranoid: false,
       });
 
       if (!stockItemFound)
-        return new NotFoundException("The stock item id provided wann't found");
+        throw new NotFoundException("The stock item id provided wann't found");
 
       return stockItemFound;
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Stock-item not found: ${error.messages}`,
       );
     }
@@ -125,7 +118,7 @@ export class StockItemsService {
     }
   }
 
-  async update(stockItem: UpdateStockItemDto, id: number) {
+  async update(stockItem: UpdateStockItemDto, id: number): Promise<StockItem> {
     try {
       if (stockItem.inventoryId) {
         await this.inventoryService.findById(stockItem.inventoryId);
@@ -145,29 +138,27 @@ export class StockItemsService {
         },
       });
 
-      if (updatedRows === 0)
-        return new NotFoundException('Inventory not found');
+      if (updatedRows === 0) throw new NotFoundException('Inventory not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Stock-item could not be updated: ${error.messages}`,
       );
     }
   }
 
-  async softDelete(id: number) {
+  async softDelete(id: number): Promise<StockItem> {
     try {
       const updatedRows = await this.stockItemModel.destroy({
         where: { id },
       });
 
-      if (updatedRows === 0)
-        return new NotFoundException('Inventory not found');
+      if (updatedRows === 0) throw new NotFoundException('Inventory not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Stock-item could not be deleted: ${error}`,
       );
     }

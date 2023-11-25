@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -23,11 +21,11 @@ import { Venue } from 'src/models/venue.entity';
 import { CreateVenueDto, UpdateVenueDto } from './dto/venue.dto';
 
 @ApiTags('venue')
-@Controller('venue')
+@Controller()
 export class VenueController {
   constructor(private readonly venueService: VenueService) {}
 
-  @Get()
+  @Get('venue')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,

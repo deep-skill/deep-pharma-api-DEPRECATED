@@ -13,7 +13,7 @@ import { Tag } from 'src/models/tag.entity';
 export class BrandService {
   constructor(@InjectModel(Brand) private brandModel: typeof Brand) {}
 
-  async findAll(includeDeleted: boolean) {
+  async findAll(includeDeleted: boolean): Promise<Brand[]> {
     try {
       if (includeDeleted) {
         return this.brandModel.findAll({
@@ -23,13 +23,11 @@ export class BrandService {
 
       return this.brandModel.findAll();
     } catch (error) {
-      return new InternalServerErrorException(
-        `Could not find brands: ${error}`,
-      );
+      throw new InternalServerErrorException(`Could not find brands: ${error}`);
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Brand> {
     try {
       const brandFound = await this.brandModel.findByPk(id, {
         paranoid: false,
@@ -44,7 +42,7 @@ export class BrandService {
     }
   }
 
-  async create(brand: CreateBrandDto) {
+  async create(brand: CreateBrandDto): Promise<Brand> {
     try {
       const { name } = brand;
 
@@ -52,39 +50,39 @@ export class BrandService {
         name: name,
       });
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Brand could not be created: ${error}`,
       );
     }
   }
 
-  async update(brand: UpdateBrandDto, id: number) {
+  async update(brand: UpdateBrandDto, id: number): Promise<Brand> {
     try {
       const [updatedRows] = await this.brandModel.update(brand, {
         where: { id },
       });
 
-      if (updatedRows === 0) return new NotFoundException('Brand not found');
+      if (updatedRows === 0) throw new NotFoundException('Brand not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Brand could not be updated: ${error}`,
       );
     }
   }
 
-  async softDelete(id: number) {
+  async softDelete(id: number): Promise<Brand> {
     try {
       const deletedRows = await this.brandModel.destroy({
         where: { id },
       });
 
-      if (deletedRows === 0) return new NotFoundException('Brand not found');
+      if (deletedRows === 0) throw new NotFoundException('Brand not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Brand could not be deleted: ${error}`,
       );
     }

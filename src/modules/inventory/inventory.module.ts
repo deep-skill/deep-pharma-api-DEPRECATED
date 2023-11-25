@@ -3,9 +3,10 @@ import { InventoryService } from './inventory.service';
 import { InventoryController } from './inventory.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Inventory } from 'src/models/inventory.entity';
+import { VenueModule } from '../venue/venue.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Inventory])],
+  imports: [SequelizeModule.forFeature([Inventory]), VenueModule],
   controllers: [InventoryController],
   providers: [InventoryService],
   exports: [InventoryService],

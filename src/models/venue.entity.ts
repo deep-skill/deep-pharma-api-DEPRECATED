@@ -39,17 +39,17 @@ export class Venue extends Model {
   @Column
   email: string;
 
-  @ForeignKey(() => Drugstore)
-  @Index('fk_venues_drugstore_id1_idx')
-  @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
-  })
-  drugstore_id: number;
+  // @ForeignKey(() => Drugstore)
+  // @Index('fk_venues_drugstore_id1_idx')
+  // @Column({
+  //   type: DataType.BIGINT,
+  //   allowNull: false,
+  // })
+  // drugstore_id: number;
 
-  @BelongsTo(() => Drugstore)
-  drugstore: Drugstore;
+  // @BelongsTo(() => Drugstore)
+  // drugstore: Drugstore;
 
-  // @HasMany(() => Inventory)
-  // inventories: Inventory[];
+  @HasMany(() => Inventory)
+  inventories: Inventory[];
 }

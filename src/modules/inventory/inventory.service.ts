@@ -6,11 +6,13 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Inventory } from 'src/models/inventory.entity';
 import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
+import { VenueService } from '../venue/venue.service';
 
 @Injectable()
 export class InventoryService {
   constructor(
     @InjectModel(Inventory) private inventoryModel: typeof Inventory,
+    private readonly venueService: VenueService,
   ) {}
 
   async findAll(includeDeleted: boolean): Promise<Inventory[]> {
@@ -44,15 +46,31 @@ export class InventoryService {
     }
   }
 
+  async findInventoriesByVenueId(id: number): Promise<any> {
+    try {
+      const inventories = await this.inventoryModel.findAll({
+        where: {
+          venue_id: id,
+        },
+      });
+
+      if (!inventories.length)
+        throw new NotFoundException('Could not found Inventories');
+
+      return inventories;
+    } catch (error) {
+      throw new InternalServerErrorException(`Inventories not found: ${error}`);
+    }
+  }
+
   async create(inventory: CreateInventoryDto): Promise<Inventory> {
     try {
-      const {
-        // venueId,
-        name,
-      } = inventory;
+      const { venueId, name } = inventory;
+
+      await this.venueService.findById(venueId);
 
       return this.inventoryModel.create({
-        // venue_id: venueId,
+        venue_id: venueId,
         name: name ?? null,
       });
     } catch (error) {
@@ -64,6 +82,10 @@ export class InventoryService {
 
   async update(inventory: UpdateInventoryDto, id: number): Promise<Inventory> {
     try {
+      if (inventory.venueId) {
+        await this.venueService.findById(inventory.venueId);
+      }
+
       const [updatedRows] = await this.inventoryModel.update(inventory, {
         where: {
           id,

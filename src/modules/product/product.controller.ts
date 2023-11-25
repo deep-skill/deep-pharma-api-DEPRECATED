@@ -12,38 +12,83 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Product } from 'src/models/product.entity';
 
-@Controller('product')
+@ApiTags('product')
+@Controller()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Get()
-  getProducts(
-    @Query('includeDeleted', ParseBoolPipe) includeDelete: boolean = false,
-  ) {
-    return this.productService.findAll(includeDelete);
+  @Get('jhfgskjdhfgdfhx')
+  // @ApiQuery({
+  //   name: 'includeDeleted',
+  //   required: false,
+  //   type: 'boolean',
+  //   description: 'Include deleted products',
+  // })
+  // @ApiOkResponse({ type: [Product] })
+  getAllProducts() // @Query('includeDeleted') includeDeleted: boolean = false,
+  : Promise<Product[]> {
+    return this.productService.findAll(false);
   }
 
-  @Get(':id')
-  getProductBuid(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.findById(id);
-  }
+  // @Get('product/:id')
+  // @ApiOkResponse({ type: Product })
+  // getProductByid(@Param('id', ParseIntPipe) id: number): Promise<Product> {
+  //   return this.productService.findById(id);
+  // }
 
-  @Post()
-  createProduct(@Body() product: CreateProductDto) {
-    return this.productService.create(product);
-  }
+  // @Get('brand/:id/product')
+  // @ApiOkResponse({
+  //   type: [Product],
+  //   description: 'Products obtained by provider id',
+  // })
+  // @ApiParam({
+  //   name: 'id',
+  //   required: true,
+  //   type: 'string',
+  //   description: 'Foreign key id',
+  // })
+  // getProductByForeignKey(
+  //   @Param('id', ParseIntPipe) id: number,
+  // ): Promise<Product[]> {
+  //   return this.productService.findProductsByBrandId(id);
+  // }
 
-  @Put(':id')
-  updateProduct(
-    @Body() product: UpdateProductDto,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    return this.productService.update(product, id);
-  }
+  // @Post('product')
+  // @ApiCreatedResponse({
+  //   type: Product,
+  //   description: 'Create product',
+  // })
+  // createProduct(@Body() product: CreateProductDto) {
+  //   return this.productService.create(product);
+  // }
 
-  @Delete(':id')
-  softDeleteProduct(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.softDelete(id);
-  }
+  // @Put('product:id')
+  // @ApiOkResponse({
+  //   type: Product,
+  //   description: 'Update product',
+  // })
+  // updateProduct(
+  //   @Body() product: UpdateProductDto,
+  //   @Param('id', ParseIntPipe) id: number,
+  // ) {
+  //   return this.productService.update(product, id);
+  // }
+
+  // @Delete('product:id')
+  // @ApiOkResponse({
+  //   type: Product,
+  //   description: 'Soft delete inventory',
+  // })
+  // softDeleteProduct(@Param('id', ParseIntPipe) id: number) {
+  //   return this.productService.softDelete(id);
+  // }
 }

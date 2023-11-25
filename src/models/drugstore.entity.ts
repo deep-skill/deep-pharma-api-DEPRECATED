@@ -29,6 +29,6 @@ export class Drugstore extends Model {
   @Column
   logo: string;
 
-  @HasMany(() => Venue)
-  venues: Venue[];
+  // @HasMany(() => Venue)
+  // venues: Venue[];
 }

@@ -27,6 +27,7 @@ export class CreateProductDto {
   @IsInt()
   brandId: number;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsArray()
   @IsInt({ each: true })

@@ -27,19 +27,19 @@ export class Inventory extends Model {
   })
   id: number;
 
-  // @ForeignKey(() => Venue)
-  // @Index({ name: 'fk_inventory_venue_idx' })
-  // @Column({
-  //   type: DataType.BIGINT,
-  //   allowNull: false,
-  // })
-  // venue_id: number;
+  @ForeignKey(() => Venue)
+  @Index({ name: 'fk_inventory_venue_idx' })
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+  })
+  venue_id: number;
 
   @Column({ type: DataType.STRING })
   name: string;
 
-  // @BelongsTo(() => Venue)
-  // venue: Venue;
+  @BelongsTo(() => Venue)
+  venue: Venue;
 
   @HasMany(() => StockItem)
   StockItems: StockItem[];
