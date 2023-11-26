@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Inventory } from 'src/models/inventory.model';
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 
 @Injectable()
@@ -46,14 +46,14 @@ export class InventoryService {
     }
   }
 
-  async create(inventory: CreateInventoryDto) {
+  async create(inventory: CreateInventoryDto): Promise<Inventory> {
     try {
       return this.inventoryModel.create({
         venue_id: inventory.venue_id,
         name: inventory.name,
       });
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Inventory could not be created: ${error}`,
       );
     }

@@ -4,13 +4,20 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  Index,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Drugstore } from './drugstore.model';
-import { Inventory } from './inventory.model';
+import { Drugstore } from '../../drugstore/entities/drugstore.entity';
+import { Inventory } from '../../inventory/entities/inventory.entity';
 
-@Table
+@Table({
+  paranoid: true,
+  tableName: 'venues',
+  deletedAt: 'deleted_at',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+})
 export class Venue extends Model {
   @Column({
     type: DataType.BIGINT,
@@ -33,6 +40,7 @@ export class Venue extends Model {
   email: string;
 
   @ForeignKey(() => Drugstore)
+  @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
     allowNull: false,

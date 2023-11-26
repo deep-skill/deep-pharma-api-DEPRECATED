@@ -1,22 +1,24 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
   IsDateString,
   IsEnum,
   IsNumber,
+  IsOptional,
 } from 'class-validator';
-import { InvoiceType } from 'src/models/supply-invoice.model';
+import { InvoiceType } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 
 export class CreateSupplyInvoiceDto {
-  @IsEnum(InvoiceType)
   @IsNotEmpty()
+  @IsEnum(InvoiceType)
   invoice_type: InvoiceType;
 
   @IsNotEmpty()
   @IsString()
   code: string;
 
+  @IsNotEmpty()
   @IsDateString()
   delivered_at: Date;
 

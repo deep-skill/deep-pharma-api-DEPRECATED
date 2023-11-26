@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ProviderController } from './provider.controller';
 import { ProviderService } from './provider.service';
-import { Provider } from 'src/models/provider.model';
+import { Provider } from '@/modules/provider/entities/provider.entity';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({

@@ -8,8 +8,9 @@ import {
   BelongsTo,
   Index,
 } from 'sequelize-typescript';
-import { Inventory } from './inventory.model';
-import { Supply_invoice } from './supply-invoice.model';
+import { Inventory } from '../../inventory/entities/inventory.entity';
+import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
+import { SaleItem } from '../../sale-item/entities/sale-item.entity';
 
 @Table({
   paranoid: true,
@@ -18,7 +19,7 @@ import { Supply_invoice } from './supply-invoice.model';
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-export class Stock_item extends Model {
+export class StockItem extends Model {
   @Column({
     type: DataType.BIGINT,
     autoIncrement: true,
@@ -35,13 +36,21 @@ export class Stock_item extends Model {
   })
   inventory_id: number;
 
-  @Index({ name: 'fk_stock_items_supply_invoices1_idx' })
-  @ForeignKey(() => Supply_invoice)
+  @Index({ name: 'fk_stock_items_SupplyInvoices1_idx' })
+  @ForeignKey(() => SupplyInvoice)
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
   })
-  supply_invoice_id: number;
+  SupplyInvoice_id: number;
+
+  @Index({ name: 'fk_stock_items_sale_items1_idx' })
+  @ForeignKey(() => SaleItem)
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+  })
+  sale_item_id: number;
 
   @Column({
     type: DataType.INTEGER,
@@ -65,6 +74,9 @@ export class Stock_item extends Model {
   @BelongsTo(() => Inventory)
   inventory: Inventory;
 
-  @BelongsTo(() => Supply_invoice)
-  supply_invoices: Supply_invoice;
+  @BelongsTo(() => SupplyInvoice)
+  SupplyInvoice: SupplyInvoice;
+
+  @BelongsTo(() => SaleItem)
+  sale_item: SaleItem;
 }

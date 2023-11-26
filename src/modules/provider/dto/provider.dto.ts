@@ -1,5 +1,5 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsString, IsNotEmpty, IsDateString, IsEnum } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateProviderDto {
   @IsNotEmpty()
