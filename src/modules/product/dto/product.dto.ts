@@ -11,27 +11,27 @@ import {
 export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  readonly name: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  description?: string;
+  readonly description?: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsEnum({ true: 1, false: 0 })
-  prescriptionRequired?: number;
+  readonly prescriptionRequired?: number;
 
   @IsNotEmpty()
   @IsInt()
-  brandId: number;
+  readonly brandId: number;
 
   @IsOptional()
   @IsNotEmpty()
   @IsArray()
   @IsInt({ each: true })
-  tagIds: number[];
+  readonly tagIds: number[];
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

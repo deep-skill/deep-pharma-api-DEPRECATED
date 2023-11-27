@@ -4,11 +4,11 @@ import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateTagDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  readonly name: string;
 
   @IsOptional()
   @IsString()
-  category: string;
+  readonly category: string;
 }
 
 export class UpdateTagDto extends PartialType(CreateTagDto) {}

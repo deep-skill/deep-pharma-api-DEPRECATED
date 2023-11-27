@@ -34,7 +34,7 @@ export class SaleItem extends Model {
     type: DataType.BIGINT,
     allowNull: false,
   })
-  products_id: number;
+  product_id: number;
 
   @Column
   label: string;
@@ -49,7 +49,7 @@ export class SaleItem extends Model {
   @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
-    allowNull: false,
+    allowNull: true,
   })
   concentration_unit_id: number;
 

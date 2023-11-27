@@ -41,7 +41,8 @@ export class ProductService {
         paranoid: false,
       });
 
-      if (!productFound) throw new NotFoundException('Product not found');
+      if (!productFound)
+        throw new NotFoundException("The product id provided wasn't found");
 
       return productFound;
     } catch (error) {
@@ -70,8 +71,7 @@ export class ProductService {
     try {
       const { name, description, prescriptionRequired, brandId, tagIds } =
         product;
-
-      if (tagIds.length) await this.tagService.validateTagIds(tagIds);
+      if (tagIds) await this.tagService.validateTagIds(tagIds);
 
       await this.brandService.findById(brandId);
 
@@ -82,11 +82,13 @@ export class ProductService {
         brand_id: brandId,
       });
 
-      for (const tagId of tagIds) {
-        await this.productTagModel.create({
-          products_id: productCreated.id,
-          tags_id: tagId,
-        });
+      if (tagIds) {
+        for (const tagId of tagIds) {
+          await this.productTagModel.create({
+            products_id: productCreated.id,
+            tags_id: tagId,
+          });
+        }
       }
 
       return productCreated;
@@ -97,7 +99,7 @@ export class ProductService {
     }
   }
 
-  async update(product: UpdateProductDto, id: number): Promise<Product> {
+  async update(product: UpdateProductDto, productId: number): Promise<Product> {
     try {
       if (product.tagIds) {
         await this.tagService.validateTagIds(product.tagIds);
@@ -108,12 +110,21 @@ export class ProductService {
       }
 
       const [updatedRows] = await this.productModel.update(product, {
-        where: { id },
+        where: { productId },
       });
 
       if (updatedRows === 0) throw new NotFoundException('Product not found');
 
-      return this.findById(id);
+      if (product.tagIds) {
+        for (const tagId of product.tagIds) {
+          await this.productTagModel.create({
+            products_id: productId,
+            tags_id: tagId,
+          });
+        }
+      }
+
+      return this.findById(productId);
     } catch (error) {
       throw new InternalServerErrorException(
         `Product could not be updated: ${error}`,

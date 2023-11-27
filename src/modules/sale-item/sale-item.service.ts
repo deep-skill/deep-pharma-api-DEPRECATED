@@ -7,12 +7,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
 import { ConcentrationUnitService } from '../concentration-unit/concentration-unit.service';
+import { ProductService } from '../product/product.service';
 
 @Injectable()
 export class SaleItemService {
   constructor(
     @InjectModel(SaleItem) private saleItemModel: typeof SaleItem,
     private readonly concentrationUnitService: ConcentrationUnitService,
+    private readonly productService: ProductService,
   ) {}
 
   async findAll(includeDeleted: boolean): Promise<SaleItem[]> {
@@ -68,17 +70,27 @@ export class SaleItemService {
   }
 
   async create(saleItemData: CreateSaleItemDto) {
-    const { label, description, concentration, concentrationUnitId } =
-      saleItemData;
+    const {
+      label,
+      description,
+      concentration,
+      concentrationUnitId,
+      productId,
+    } = saleItemData;
 
-    await this.concentrationUnitService.findById(concentrationUnitId);
+    if (concentrationUnitId) {
+      await this.concentrationUnitService.findById(concentrationUnitId);
+    }
+
+    await this.productService.findById(productId);
 
     try {
       const newSaleItem = await this.saleItemModel.create({
         label,
         description,
         concentration,
-        concentration_unit_id: concentrationUnitId,
+        concentration_unit_id: concentrationUnitId ?? null,
+        product_id: productId ?? null,
       });
 
       return newSaleItem;
@@ -90,8 +102,13 @@ export class SaleItemService {
   }
 
   async update(id: number, saleItemData: UpdateSaleItemDto): Promise<SaleItem> {
-    const { label, description, concentration, concentrationUnitId } =
-      saleItemData;
+    const {
+      label,
+      description,
+      concentration,
+      concentrationUnitId,
+      productId,
+    } = saleItemData;
 
     const saleItem = await this.findById(id);
 
@@ -99,12 +116,17 @@ export class SaleItemService {
       await this.concentrationUnitService.findById(concentrationUnitId);
     }
 
+    if (productId) {
+      await this.productService.findById(productId);
+    }
+
     try {
       await saleItem.update({
         label,
         description,
         concentration,
-        concentration_unit_id: concentrationUnitId,
+        concentration_unit_id: concentrationUnitId ?? null,
+        product_id: productId ?? null,
       });
       return saleItem;
     } catch (error) {
