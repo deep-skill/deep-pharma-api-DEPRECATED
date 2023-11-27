@@ -1,7 +1,6 @@
 import {
   Controller,
   ParseIntPipe,
-  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -21,11 +20,11 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('tag')
-@Controller('tag')
+@Controller()
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
-  @Get()
+  @Get('tag')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
@@ -34,18 +33,18 @@ export class TagController {
   })
   @ApiOkResponse({ type: [Tag] })
   getTags(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
+    @Query('includeDeleted') includeDeleted: boolean = false,
   ): Promise<Tag[]> {
     return this.tagService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('tag/:id')
   @ApiOkResponse({ type: Tag })
   getTagById(@Param('id', ParseIntPipe) id: number): Promise<Tag> {
     return this.tagService.findById(id);
   }
 
-  @Post()
+  @Post('tag')
   @ApiCreatedResponse({
     type: Tag,
     description: 'Create tag',
@@ -54,7 +53,7 @@ export class TagController {
     return this.tagService.create(tag);
   }
 
-  @Put(':id')
+  @Put('tag/:id')
   @ApiOkResponse({
     type: Tag,
     description: 'Update tag',
@@ -66,7 +65,7 @@ export class TagController {
     return this.tagService.update(tag, id);
   }
 
-  @Delete(':id')
+  @Delete('tag/:id')
   @ApiOkResponse({
     type: Tag,
     description: 'Delete soft tag',

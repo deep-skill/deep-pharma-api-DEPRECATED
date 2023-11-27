@@ -23,11 +23,11 @@ import { Venue } from '@/modules/venue/entities/venue.entity';
 import { CreateVenueDto, UpdateVenueDto } from './dto/venue.dto';
 
 @ApiTags('venue')
-@Controller()
+@Controller('venue')
 export class VenueController {
   constructor(private readonly venueService: VenueService) {}
 
-  @Get('venue')
+  @Get()
   @ApiQuery({
     name: 'includeDeleted',
     required: false,

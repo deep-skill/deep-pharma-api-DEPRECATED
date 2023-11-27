@@ -36,14 +36,14 @@ export class ProductService {
   }
 
   async findById(id: number): Promise<Product> {
+    const productFound = await this.productModel.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!productFound)
+      throw new NotFoundException("The product id provided wasn't found");
+
     try {
-      const productFound = await this.productModel.findByPk(id, {
-        paranoid: false,
-      });
-
-      if (!productFound)
-        throw new NotFoundException("The product id provided wasn't found");
-
       return productFound;
     } catch (error) {
       throw new InternalServerErrorException(`Product not found: ${error}`);
@@ -51,16 +51,15 @@ export class ProductService {
   }
 
   async findProductsByBrandId(id: number): Promise<Product[]> {
+    const products = await this.productModel.findAll({
+      where: {
+        brand_id: id,
+      },
+    });
+
+    if (!products.length)
+      throw new NotFoundException('Could not found products');
     try {
-      const products = await this.productModel.findAll({
-        where: {
-          brand_id: id,
-        },
-      });
-
-      if (!products.length)
-        throw new NotFoundException('Could not found products');
-
       return products;
     } catch (error) {
       throw new InternalServerErrorException(`Product not found: ${error}`);
@@ -68,13 +67,14 @@ export class ProductService {
   }
 
   async create(product: CreateProductDto): Promise<Product> {
+    const { name, description, prescriptionRequired, brandId, tagIds } =
+      product;
+
+    if (tagIds) await this.tagService.validateTagIds(tagIds);
+
+    await this.brandService.findById(brandId);
+
     try {
-      const { name, description, prescriptionRequired, brandId, tagIds } =
-        product;
-      if (tagIds) await this.tagService.validateTagIds(tagIds);
-
-      await this.brandService.findById(brandId);
-
       const productCreated = await this.productModel.create({
         name: name,
         description: description ?? null,
@@ -100,21 +100,23 @@ export class ProductService {
   }
 
   async update(product: UpdateProductDto, productId: number): Promise<Product> {
+    const { tagIds, brandId } = product;
+
+    if (tagIds) {
+      await this.tagService.validateTagIds(tagIds);
+    }
+
+    if (brandId) {
+      await this.brandService.findById(brandId);
+    }
+
+    const [updatedRows] = await this.productModel.update(product, {
+      where: { id: productId },
+    });
+
+    if (updatedRows === 0) throw new NotFoundException('Product not found');
+
     try {
-      if (product.tagIds) {
-        await this.tagService.validateTagIds(product.tagIds);
-      }
-
-      if (product.brandId) {
-        await this.brandService.findById(product.brandId);
-      }
-
-      const [updatedRows] = await this.productModel.update(product, {
-        where: { productId },
-      });
-
-      if (updatedRows === 0) throw new NotFoundException('Product not found');
-
       if (product.tagIds) {
         for (const tagId of product.tagIds) {
           await this.productTagModel.create({
@@ -133,13 +135,13 @@ export class ProductService {
   }
 
   async softDelete(id: number): Promise<Product> {
+    const updatedRows = await this.productModel.destroy({
+      where: { id },
+    });
+
+    if (updatedRows === 0) throw new NotFoundException('Product not found');
+
     try {
-      const updatedRows = await this.productModel.destroy({
-        where: { id },
-      });
-
-      if (updatedRows === 0) throw new NotFoundException('Product not found');
-
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(

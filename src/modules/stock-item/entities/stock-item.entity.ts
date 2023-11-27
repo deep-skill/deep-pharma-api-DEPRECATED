@@ -42,7 +42,7 @@ export class StockItem extends Model {
     type: DataType.BIGINT,
     allowNull: false,
   })
-  SupplyInvoice_id: number;
+  supply_invoice_id: number;
 
   @Index({ name: 'fk_stock_items_sale_items1_idx' })
   @ForeignKey(() => SaleItem)

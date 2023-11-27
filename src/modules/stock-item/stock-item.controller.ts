@@ -8,7 +8,6 @@ import {
   Delete,
   Body,
   ParseIntPipe,
-  ParseBoolPipe,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -18,14 +17,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { StockItemsService } from './stock-item.service';
+import { StockItemService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 
 @ApiTags('stock-item')
 @Controller('stock-item')
-export class StockItemsController {
-  constructor(private readonly stockItemsService: StockItemsService) {}
+export class StockItemController {
+  constructor(private readonly stockItemsService: StockItemService) {}
 
   @Get()
   @ApiQuery({

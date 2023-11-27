@@ -32,14 +32,14 @@ export class InventoryService {
   }
 
   async findById(id: number): Promise<Inventory> {
+    const inventoryFound = await this.inventoryModel.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!inventoryFound)
+      throw new NotFoundException("The inventory id provided wasn't found");
+
     try {
-      const inventoryFound = await this.inventoryModel.findByPk(id, {
-        paranoid: false,
-      });
-
-      if (!inventoryFound)
-        throw new NotFoundException("The inventory id provided wasn't found");
-
       return inventoryFound;
     } catch (error) {
       throw new InternalServerErrorException(`Inventory not found: ${error}`);
@@ -47,16 +47,16 @@ export class InventoryService {
   }
 
   async findInventoriesByVenueId(id: number): Promise<any> {
+    const inventories = await this.inventoryModel.findAll({
+      where: {
+        venue_id: id,
+      },
+    });
+
+    if (!inventories.length)
+      throw new NotFoundException('Could not found Inventories');
+
     try {
-      const inventories = await this.inventoryModel.findAll({
-        where: {
-          venue_id: id,
-        },
-      });
-
-      if (!inventories.length)
-        throw new NotFoundException('Could not found Inventories');
-
       return inventories;
     } catch (error) {
       throw new InternalServerErrorException(`Inventories not found: ${error}`);
@@ -71,7 +71,7 @@ export class InventoryService {
 
       return this.inventoryModel.create({
         venue_id: venueId,
-        name: name ?? null,
+        name: name,
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -81,19 +81,19 @@ export class InventoryService {
   }
 
   async update(inventory: UpdateInventoryDto, id: number): Promise<Inventory> {
+    if (inventory.venueId) {
+      await this.venueService.findById(inventory.venueId);
+    }
+
+    const [updatedRows] = await this.inventoryModel.update(inventory, {
+      where: {
+        id,
+      },
+    });
+
+    if (updatedRows === 0) throw new NotFoundException('Inventory not found');
+
     try {
-      if (inventory.venueId) {
-        await this.venueService.findById(inventory.venueId);
-      }
-
-      const [updatedRows] = await this.inventoryModel.update(inventory, {
-        where: {
-          id,
-        },
-      });
-
-      if (updatedRows === 0) throw new NotFoundException('Inventory not found');
-
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
@@ -103,15 +103,15 @@ export class InventoryService {
   }
 
   async softDelete(id: number): Promise<Inventory> {
+    const updatedRows = await this.inventoryModel.destroy({
+      where: {
+        id,
+      },
+    });
+
+    if (updatedRows === 0) throw new NotFoundException('Inventory not found');
+
     try {
-      const updatedRows = await this.inventoryModel.destroy({
-        where: {
-          id,
-        },
-      });
-
-      if (updatedRows === 0) throw new NotFoundException('Inventory not found');
-
       return await this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(

@@ -1,7 +1,6 @@
 import {
   Controller,
   ParseIntPipe,
-  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -39,12 +38,12 @@ export class SupplyInvoiceController {
   })
   @ApiOkResponse({ type: [SupplyInvoice] })
   getAllSupplyInvoices(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
+    @Query('includeDeleted') includeDeleted: boolean = false,
   ) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }
 
-  @Get('supply-invoice:id')
+  @Get('supply-invoice/:id')
   @ApiOkResponse({ type: SupplyInvoice })
   getSupplyInvoiceById(@Param('id', ParseIntPipe) id: number) {
     return this.supplyInvoiceService.findById(id);
