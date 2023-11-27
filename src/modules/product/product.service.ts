@@ -110,7 +110,7 @@ export class ProductService {
       }
 
       const [updatedRows] = await this.productModel.update(product, {
-        where: { productId },
+        where: { id: productId },
       });
 
       if (updatedRows === 0) throw new NotFoundException('Product not found');

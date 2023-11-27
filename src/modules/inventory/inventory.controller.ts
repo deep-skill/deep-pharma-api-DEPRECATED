@@ -23,7 +23,7 @@ import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 
 @ApiTags('inventory')
-@Controller('inventory')
+@Controller()
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 

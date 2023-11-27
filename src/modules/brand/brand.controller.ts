@@ -1,7 +1,6 @@
 import {
   Controller,
   ParseIntPipe,
-  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -34,9 +33,9 @@ export class BrandController {
   })
   @ApiOkResponse({ type: [Brand] })
   getBrands(
-    @Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean = false,
+    @Query('includeDeleted') includeDeleted: boolean = false,
   ): Promise<Brand[]> {
-    return this.brandService.findAll(includeDeletd);
+    return this.brandService.findAll(includeDeleted);
   }
 
   @Get(':id')

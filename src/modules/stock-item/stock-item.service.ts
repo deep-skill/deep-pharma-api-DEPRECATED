@@ -14,9 +14,9 @@ import { SaleItemService } from '../sale-item/sale-item.service';
 @Injectable()
 export class StockItemsService {
   private readonly foreignKeyMap = {
-    inventoryId: 'inventory_id',
-    supplyInvoiceId: 'supply_invoice_id',
-    saleItemId: 'sale_item_id',
+    'inventory-id': 'inventory_id',
+    'supply-invoice-id': 'supply_invoice_id',
+    'sale-item-id': 'sale_item_id',
   };
 
   constructor(

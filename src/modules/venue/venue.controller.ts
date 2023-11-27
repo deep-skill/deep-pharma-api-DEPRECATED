@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -41,13 +39,13 @@ export class VenueController {
     return this.venueService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('venue/:id')
   @ApiOkResponse({ type: Venue })
   async getVenueById(@Param('id', ParseIntPipe) id: number) {
     return this.venueService.findById(id);
   }
 
-  @Get('drugstore/:id')
+  @Get('drugstore/:id/venue')
   @ApiOkResponse({
     type: [Venue],
     description: 'Venues obtained by drugstore foreign key',
@@ -58,7 +56,7 @@ export class VenueController {
     return this.venueService.findByForeignKey(id);
   }
 
-  @Post()
+  @Post('venue')
   @ApiCreatedResponse({
     type: Venue,
     description: 'Create venue',
@@ -67,7 +65,7 @@ export class VenueController {
     return this.venueService.create(venueData);
   }
 
-  @Put(':id')
+  @Put('venue/:id')
   @ApiOkResponse({
     type: Venue,
     description: 'Update venue',
@@ -79,7 +77,7 @@ export class VenueController {
     return this.venueService.update(id, venueData);
   }
 
-  @Delete(':id')
+  @Delete('venue/:id')
   @ApiOkResponse({
     type: Venue,
     description: 'Delete soft venue',

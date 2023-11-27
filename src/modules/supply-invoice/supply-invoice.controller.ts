@@ -38,13 +38,11 @@ export class SupplyInvoiceController {
     description: 'Include deleted supply-invoices',
   })
   @ApiOkResponse({ type: [SupplyInvoice] })
-  getAllSupplyInvoices(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
-  ) {
+  getAllSupplyInvoices(@Query('includeDeleted') includeDeleted = false) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }
 
-  @Get('supply-invoice:id')
+  @Get('supply-invoice/:id')
   @ApiOkResponse({ type: SupplyInvoice })
   getSupplyInvoiceById(@Param('id', ParseIntPipe) id: number) {
     return this.supplyInvoiceService.findById(id);

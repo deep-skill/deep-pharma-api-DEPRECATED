@@ -34,15 +34,15 @@ export class ProductController {
     description: 'Include deleted products',
   })
   @ApiOkResponse({ type: [Product] })
-  getAllProducts(
-    @Query('includeDeleted') includeDeleted: boolean = false,
+  async getAllProducts(
+    @Query('includeDeleted') includeDeleted = false,
   ): Promise<Product[]> {
     return this.productService.findAll(includeDeleted);
   }
 
   @Get('product/:id')
   @ApiOkResponse({ type: Product })
-  getProductByid(@Param('id', ParseIntPipe) id: number): Promise<Product> {
+  getProductById(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     return this.productService.findById(id);
   }
 
@@ -72,7 +72,7 @@ export class ProductController {
     return this.productService.create(product);
   }
 
-  @Put('product:id')
+  @Put('product/:id')
   @ApiOkResponse({
     type: Product,
     description: 'Update product',
@@ -84,7 +84,7 @@ export class ProductController {
     return this.productService.update(product, id);
   }
 
-  @Delete('product:id')
+  @Delete('product/:id')
   @ApiOkResponse({
     type: Product,
     description: 'Soft delete inventory',
