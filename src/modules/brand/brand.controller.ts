@@ -33,9 +33,9 @@ export class BrandController {
   })
   @ApiOkResponse({ type: [Brand] })
   getBrands(
-    @Query('includeDeleted') includeDeletd: boolean = false,
+    @Query('includeDeleted') includeDeleted: boolean = false,
   ): Promise<Brand[]> {
-    return this.brandService.findAll(includeDeletd);
+    return this.brandService.findAll(includeDeleted);
   }
 
   @Get('brand/:id')

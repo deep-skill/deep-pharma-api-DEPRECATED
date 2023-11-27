@@ -37,9 +37,7 @@ export class SupplyInvoiceController {
     description: 'Include deleted supply-invoices',
   })
   @ApiOkResponse({ type: [SupplyInvoice] })
-  getAllSupplyInvoices(
-    @Query('includeDeleted') includeDeleted: boolean = false,
-  ) {
+  getAllSupplyInvoices(@Query('includeDeleted') includeDeleted = false) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }
 

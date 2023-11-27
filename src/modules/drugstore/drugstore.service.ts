@@ -17,14 +17,12 @@ export class DrugstoreService {
   async findAll(includeDeleted: boolean): Promise<Drugstore[]> {
     try {
       if (includeDeleted) {
-        return this.drugstoreModel.findAll();
+        return this.drugstoreModel.findAll({
+          paranoid: false,
+        });
       }
 
-      return this.drugstoreModel.findAll({
-        where: {
-          deleted_at: null,
-        },
-      });
+      return this.drugstoreModel.findAll();
     } catch (error) {
       throw new InternalServerErrorException(
         `Failed to obtain drugstores: ${error.message}`,

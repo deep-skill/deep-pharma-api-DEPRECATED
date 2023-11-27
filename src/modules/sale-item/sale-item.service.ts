@@ -125,9 +125,10 @@ export class SaleItemService {
         label,
         description,
         concentration,
-        concentration_unit_id: concentrationUnitId ?? null,
-        product_id: productId ?? null,
+        concentration_unit_id: concentrationUnitId,
+        product_id: productId,
       });
+
       return saleItem;
     } catch (error) {
       throw new InternalServerErrorException(
