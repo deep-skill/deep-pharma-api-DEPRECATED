@@ -4,11 +4,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Product } from 'src/models/product.model';
+import { Product } from '@/modules/product/entities/product.entity';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
-import { ProductTag } from 'src/models/product-tag.model';
+import { ProductTag } from '@/modules/product/entities/product-tag.entity';
 import { TagService } from '../tag/tag.service';
-import { Tag } from 'src/models/tag.model';
+import { BrandService } from '../brand/brand.service';
 
 @Injectable()
 export class ProductService {
@@ -16,9 +16,10 @@ export class ProductService {
     @InjectModel(Product) private productModel: typeof Product,
     @InjectModel(ProductTag) private productTagModel: typeof ProductTag,
     private readonly tagService: TagService,
+    private readonly brandService: BrandService,
   ) {}
 
-  async findAll(includeDeleted: boolean) {
+  async findAll(includeDeleted: boolean): Promise<Product[]> {
     try {
       if (includeDeleted) {
         return this.productModel.findAll({
@@ -28,80 +29,109 @@ export class ProductService {
 
       return this.productModel.findAll();
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Could not find products: ${error}`,
       );
     }
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Product> {
     try {
-      const productFound = await this.productModel.findOne({
-        where: { id },
+      const productFound = await this.productModel.findByPk(id, {
         paranoid: false,
       });
 
-      if (!productFound) return new NotFoundException('Product not found');
+      if (!productFound) throw new NotFoundException('Product not found');
 
       return productFound;
     } catch (error) {
-      return new InternalServerErrorException(`Product not found: ${error}`);
+      throw new InternalServerErrorException(`Product not found: ${error}`);
     }
   }
 
-  async create(product: CreateProductDto) {
+  async findProductsByBrandId(id: number): Promise<Product[]> {
     try {
-      const tagFound = await this.tagService.findById(product.tag_id);
-
-      const productCreated = await this.productModel.create({
-        name: product.name,
-        description: product.description ?? null,
-        prescription_required: product.prescription_required ?? null,
-        brand_id: product.brand_id,
+      const products = await this.productModel.findAll({
+        where: {
+          brand_id: id,
+        },
       });
 
-      if (tagFound instanceof Tag) {
+      if (!products.length)
+        throw new NotFoundException('Could not found products');
+
+      return products;
+    } catch (error) {
+      throw new InternalServerErrorException(`Product not found: ${error}`);
+    }
+  }
+
+  async create(product: CreateProductDto): Promise<Product> {
+    try {
+      const { name, description, prescriptionRequired, brandId, tagIds } =
+        product;
+
+      if (tagIds.length) await this.tagService.validateTagIds(tagIds);
+
+      await this.brandService.findById(brandId);
+
+      const productCreated = await this.productModel.create({
+        name: name,
+        description: description ?? null,
+        prescription_required: prescriptionRequired ?? null,
+        brand_id: brandId,
+      });
+
+      for (const tagId of tagIds) {
         await this.productTagModel.create({
           products_id: productCreated.id,
-          tags_id: tagFound.id,
+          tags_id: tagId,
         });
       }
 
       return productCreated;
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Product could not be created: ${error}`,
       );
     }
   }
 
-  async update(product: UpdateProductDto, id: number) {
+  async update(product: UpdateProductDto, id: number): Promise<Product> {
     try {
+      if (product.tagIds) {
+        await this.tagService.validateTagIds(product.tagIds);
+      }
+
+      if (product.brandId) {
+        await this.brandService.findById(product.brandId);
+      }
+
       const [updatedRows] = await this.productModel.update(product, {
         where: { id },
       });
 
-      if (updatedRows === 0) return new NotFoundException('Product not found');
+      if (updatedRows === 0) throw new NotFoundException('Product not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Product could not be updated: ${error}`,
       );
     }
   }
 
-  async softDelete(id: number) {
+  async softDelete(id: number): Promise<Product> {
     try {
       const updatedRows = await this.productModel.destroy({
         where: { id },
       });
 
-      if (updatedRows === 0) return new NotFoundException('Product not found');
+      if (updatedRows === 0) throw new NotFoundException('Product not found');
 
       return this.findById(id);
     } catch (error) {
-      return new InternalServerErrorException(
+      throw new InternalServerErrorException(
         `Faild to delete product: ${error}`,
       );
     }

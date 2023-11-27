@@ -1,3 +1,5 @@
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
+import { Venue } from '@/modules/venue/entities/venue.entity';
 import {
   Column,
   Model,
@@ -8,12 +10,10 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { StockItem } from '../../stock-item/entities/stock-item.entity';
-import { Venue } from '../../venue/entities/venue.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'Inventories',
+  tableName: 'inventories',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',

@@ -41,7 +41,13 @@ export class StockItemsController {
 
   @Get(':id')
   @ApiOkResponse({ type: StockItem })
-  getStockItemById(@Param('id', ParseIntPipe) id: number) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'string',
+    description: 'Find by stock item id',
+  })
+  getStockItemById(@Param('id', ParseIntPipe) id: number): Promise<StockItem> {
     return this.stockItemsService.findById(id);
   }
 
@@ -87,7 +93,7 @@ export class StockItemsController {
   updateStockItem(
     @Body() stockItem: UpdateStockItemDto,
     @Param('id', ParseIntPipe) id: number,
-  ) {
+  ): Promise<StockItem> {
     return this.stockItemsService.update(stockItem, id);
   }
 
@@ -96,7 +102,9 @@ export class StockItemsController {
     type: StockItem,
     description: 'Delete soft stock item',
   })
-  softDeleteStockItem(@Param('id', ParseIntPipe) id: number) {
+  softDeleteStockItem(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StockItem> {
     return this.stockItemsService.softDelete(id);
   }
 }

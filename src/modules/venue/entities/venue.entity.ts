@@ -1,3 +1,5 @@
+import { Drugstore } from '@/modules/drugstore/entities/drugstore.entity';
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 import {
   BelongsTo,
   Column,
@@ -8,8 +10,6 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Drugstore } from '../../drugstore/entities/drugstore.entity';
-import { Inventory } from '../../inventory/entities/inventory.entity';
 
 @Table({
   paranoid: true,

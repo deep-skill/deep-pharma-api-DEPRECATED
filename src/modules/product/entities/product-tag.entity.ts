@@ -6,11 +6,11 @@ import {
   ForeignKey,
   Index,
 } from 'sequelize-typescript';
-import { Product } from './product.model';
-import { Tag } from './tag.model';
+import { Product } from './product.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 
 @Table({
-  tableName: 'Product_tags',
+  tableName: 'product_tags',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })

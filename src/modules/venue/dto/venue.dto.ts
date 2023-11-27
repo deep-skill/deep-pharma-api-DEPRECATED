@@ -27,8 +27,8 @@ export class CreateVenueDto {
   @IsEmail()
   readonly email?: string;
 
-  @IsNotEmpty()
   @IsNumber()
+  @IsNotEmpty()
   readonly drugstoreId: number;
 }
 

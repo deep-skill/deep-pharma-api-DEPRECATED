@@ -1,3 +1,6 @@
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
+import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
+import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 import {
   Column,
   Model,
@@ -8,13 +11,10 @@ import {
   BelongsTo,
   Index,
 } from 'sequelize-typescript';
-import { Inventory } from '../../inventory/entities/inventory.entity';
-import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
-import { SaleItem } from '../../sale-item/entities/sale-item.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'Stock_items',
+  tableName: 'stock_items',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',

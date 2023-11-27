@@ -1,9 +1,9 @@
+import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
-import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'Providers',
+  tableName: 'providers',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',

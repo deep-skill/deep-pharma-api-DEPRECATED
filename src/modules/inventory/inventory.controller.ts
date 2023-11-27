@@ -13,6 +13,7 @@ import {
 import {
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
@@ -26,31 +27,44 @@ import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
-  @Get()
-<<<<<<< HEAD
-  getInventories(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean,
-  ) {
-=======
+  @Get('inventory')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
     type: 'boolean',
-    description: 'Include deleted items',
+    description: 'Include deleted inventories',
   })
   @ApiOkResponse({ type: [Inventory] })
-  getAllInventories(@Query('includeDeleted') includeDeleted: boolean) {
->>>>>>> 39251dace816d295f209d486fc4713fce4a1fce6
+  getAllInventories(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
+  ) {
     return this.inventoryService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('inventory/:id')
   @ApiOkResponse({ type: Inventory })
   getInventoryById(@Param('id', ParseIntPipe) id: number) {
     return this.inventoryService.findById(id);
   }
 
-  @Post()
+  @Get('venue/:id/inventory')
+  @ApiOkResponse({
+    type: [Inventory],
+    description: 'Inventories obtained by venue id',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'string',
+    description: 'Find by venue id',
+  })
+  getInventoryByVenueId(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Inventory[]> {
+    return this.inventoryService.findInventoriesByVenueId(id);
+  }
+
+  @Post('inventory')
   @ApiCreatedResponse({
     type: Inventory,
     description: 'Create inventory',
@@ -59,7 +73,7 @@ export class InventoryController {
     return this.inventoryService.create(inventory);
   }
 
-  @Put(':id')
+  @Put('inventory/:id')
   @ApiOkResponse({
     type: Inventory,
     description: 'Update inventory',
@@ -71,7 +85,7 @@ export class InventoryController {
     return this.inventoryService.update(inventory, id);
   }
 
-  @Delete(':id')
+  @Delete('inventory/:id')
   @ApiOkResponse({
     type: Inventory,
     description: 'Delete soft inventory',

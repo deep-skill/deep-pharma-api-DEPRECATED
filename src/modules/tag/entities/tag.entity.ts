@@ -6,8 +6,8 @@ import {
   Index,
   BelongsToMany,
 } from 'sequelize-typescript';
-import { Product } from './product.model';
-import { ProductTag } from './product-tag.model';
+import { Product } from '../../product/entities/product.entity';
+import { ProductTag } from '../../product/entities/product-tag.entity';
 
 @Table({
   paranoid: true,
@@ -37,7 +37,7 @@ export class Tag extends Model {
 
   @Index({
     type: 'FULLTEXT',
-    name: 'idx_tags_name',
+    name: 'idx_tags_category',
   })
   @Column({ type: DataType.STRING })
   category: string;

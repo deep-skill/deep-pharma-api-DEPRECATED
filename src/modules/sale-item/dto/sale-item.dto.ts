@@ -14,8 +14,8 @@ export class CreateSaleItemDto {
   @IsNumber()
   readonly concentration: number;
 
-  @IsNotEmpty()
   @IsNumber()
+  @IsNotEmpty()
   readonly concentrationUnitId: number;
 }
 

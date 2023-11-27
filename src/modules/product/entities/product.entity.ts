@@ -7,14 +7,16 @@ import {
   BelongsTo,
   Index,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
-import { Brand } from './brand.model';
-import { Tag } from './tag.model';
-import { ProductTag } from './product-tag.model';
+import { Brand } from '../../brand/entities/brand.entity';
+import { Tag } from '../../tag/entities/tag.entity';
+import { ProductTag } from './product-tag.entity';
+import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'Products',
+  tableName: 'products',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
@@ -57,4 +59,7 @@ export class Product extends Model {
 
   @BelongsToMany(() => Tag, () => ProductTag)
   tags: Tag[];
+
+  @HasMany(() => SaleItem)
+  sale_items: SaleItem[];
 }

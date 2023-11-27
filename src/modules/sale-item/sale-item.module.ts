@@ -9,5 +9,6 @@ import { ConcentrationUnitModule } from '../concentration-unit/concentration-uni
   imports: [SequelizeModule.forFeature([SaleItem]), ConcentrationUnitModule],
   controllers: [SaleItemController],
   providers: [SaleItemService],
+  exports: [SaleItemService],
 })
 export class SaleItemModule {}

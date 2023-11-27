@@ -13,6 +13,7 @@ import {
 import {
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
@@ -22,32 +23,49 @@ import {
   UpdateSupplyInvoiceDto,
 } from './dto/supply-invoice.dto';
 import { SupplyInvoiceService } from './supply-invoice.service';
-import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
+import { SupplyInvoice } from './entities/supply-invoice.entity';
 
 @ApiTags('supply-invoice')
-@Controller('supply-invoice')
+@Controller()
 export class SupplyInvoiceController {
   constructor(private readonly supplyInvoiceService: SupplyInvoiceService) {}
 
-  @Get()
+  @Get('supply-invoice')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
     type: 'boolean',
-    description: 'Include deleted items',
+    description: 'Include deleted supply-invoices',
   })
   @ApiOkResponse({ type: [SupplyInvoice] })
-  getAllSupplyInvoices(@Query('includeDeleted') includeDeleted: boolean) {
+  getAllSupplyInvoices(
+    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
+  ) {
     return this.supplyInvoiceService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('supply-invoice:id')
   @ApiOkResponse({ type: SupplyInvoice })
   getSupplyInvoiceById(@Param('id', ParseIntPipe) id: number) {
     return this.supplyInvoiceService.findById(id);
   }
 
-  @Post()
+  @Get('provider/:id/supply-invoice')
+  @ApiOkResponse({
+    type: [SupplyInvoice],
+    description: 'Supply invoices obtained by provider id',
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'string',
+    description: 'Foreign key id',
+  })
+  getSupplyInvoiceByForeignKey(@Param('id', ParseIntPipe) id: number) {
+    return this.supplyInvoiceService.findSupplyInvoiceByProviderId(id);
+  }
+
+  @Post('supply-invoice')
   @ApiCreatedResponse({
     type: SupplyInvoice,
     description: 'Create supply invoice',
@@ -58,7 +76,7 @@ export class SupplyInvoiceController {
     return this.supplyInvoiceService.create(supplyInvoice);
   }
 
-  @Put(':id')
+  @Put('supply-invoice/:id')
   @ApiOkResponse({
     type: SupplyInvoice,
     description: 'Update supply invoice',
@@ -70,7 +88,7 @@ export class SupplyInvoiceController {
     return this.supplyInvoiceService.update(supplyInvoice, id);
   }
 
-  @Delete(':id')
+  @Delete('supply-invoice/:id')
   @ApiOkResponse({
     type: SupplyInvoice,
     description: 'Delete soft supply invoice',

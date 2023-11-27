@@ -9,5 +9,6 @@ import { DrugstoreModule } from '../drugstore/drugstore.module';
   imports: [SequelizeModule.forFeature([Venue]), DrugstoreModule],
   controllers: [VenueController],
   providers: [VenueService],
+  exports: [VenueService],
 })
 export class VenueModule {}

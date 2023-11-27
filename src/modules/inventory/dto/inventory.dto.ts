@@ -1,12 +1,13 @@
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateInventoryDto {
   @IsNotEmpty()
   @IsNumber()
-  venue_id: number;
+  venueId: number;
 
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name: string;
 }
