@@ -93,13 +93,23 @@ export class SupplyInvoiceService {
   }
 
   async update(supplyInvoice: UpdateSupplyInvoiceDto, id: number) {
-    if (supplyInvoice.providerId) {
-      await this.providerService.findById(supplyInvoice.providerId);
+    const { providerId, invoiceType, code, deliveredAt } = supplyInvoice;
+
+    if (providerId) {
+      await this.providerService.findById(providerId);
     }
 
-    const [updatedRows] = await this.supplyInvoiceModel.update(supplyInvoice, {
-      where: { id },
-    });
+    const [updatedRows] = await this.supplyInvoiceModel.update(
+      {
+        provider_id: providerId,
+        invoice_type: invoiceType,
+        code: code,
+        delivered_at: deliveredAt,
+      },
+      {
+        where: { id },
+      },
+    );
 
     if (updatedRows === 0)
       return new NotFoundException('Supply-invoice not found');

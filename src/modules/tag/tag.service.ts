@@ -47,7 +47,7 @@ export class TagService {
 
       return this.tagModel.create({
         name: name,
-        category: category ?? null,
+        category: category,
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -57,9 +57,17 @@ export class TagService {
   }
 
   async update(tag: UpdateTagDto, id: number): Promise<Tag> {
-    const [updatedRows] = await this.tagModel.update(tag, {
-      where: { id },
-    });
+    const { name, category } = tag;
+
+    const [updatedRows] = await this.tagModel.update(
+      {
+        name: name,
+        category: category,
+      },
+      {
+        where: { id },
+      },
+    );
 
     if (updatedRows === 0) throw new NotFoundException('Tag not found');
 

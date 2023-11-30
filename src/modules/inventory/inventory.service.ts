@@ -81,15 +81,23 @@ export class InventoryService {
   }
 
   async update(inventory: UpdateInventoryDto, id: number): Promise<Inventory> {
-    if (inventory.venueId) {
-      await this.venueService.findById(inventory.venueId);
+    const { venueId, name } = inventory;
+
+    if (venueId) {
+      await this.venueService.findById(venueId);
     }
 
-    const [updatedRows] = await this.inventoryModel.update(inventory, {
-      where: {
-        id,
+    const [updatedRows] = await this.inventoryModel.update(
+      {
+        venue_id: venueId,
+        name: name,
       },
-    });
+      {
+        where: {
+          id,
+        },
+      },
+    );
 
     if (updatedRows === 0) throw new NotFoundException('Inventory not found');
 

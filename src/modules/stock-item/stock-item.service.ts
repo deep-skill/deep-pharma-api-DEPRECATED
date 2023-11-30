@@ -119,23 +119,42 @@ export class StockItemService {
   }
 
   async update(stockItem: UpdateStockItemDto, id: number): Promise<StockItem> {
-    if (stockItem.inventoryId) {
-      await this.inventoryService.findById(stockItem.inventoryId);
+    const {
+      inventoryId,
+      supplyInvoiceId,
+      saleItemId,
+      quantity,
+      comment,
+      expiresAt,
+    } = stockItem;
+
+    if (inventoryId) {
+      await this.inventoryService.findById(inventoryId);
     }
 
-    if (stockItem.supplyInvoiceId) {
-      await this.supplyInvoiceService.findById(stockItem.supplyInvoiceId);
+    if (supplyInvoiceId) {
+      await this.supplyInvoiceService.findById(supplyInvoiceId);
     }
 
-    if (stockItem.saleItemId) {
-      await this.saleItemService.findById(stockItem.saleItemId);
+    if (saleItemId) {
+      await this.saleItemService.findById(saleItemId);
     }
 
-    const [updatedRows] = await this.stockItemModel.update(stockItem, {
-      where: {
-        id,
+    const [updatedRows] = await this.stockItemModel.update(
+      {
+        inventory_id: inventoryId,
+        supply_invoice_id: supplyInvoiceId,
+        sale_item_id: saleItemId,
+        quantity: quantity,
+        comment: comment,
+        expires_at: expiresAt,
       },
-    });
+      {
+        where: {
+          id,
+        },
+      },
+    );
 
     if (updatedRows === 0) throw new NotFoundException('Inventory not found');
 

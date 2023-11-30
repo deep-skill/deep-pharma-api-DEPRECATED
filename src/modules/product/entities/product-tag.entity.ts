@@ -7,7 +7,7 @@ import {
   Index,
 } from 'sequelize-typescript';
 import { Product } from './product.entity';
-import { Tag } from '../../tag/entities/tag.entity';
+import { Tag } from '@/modules/tag/entities/tag.entity';
 
 @Table({
   tableName: 'product_tags',

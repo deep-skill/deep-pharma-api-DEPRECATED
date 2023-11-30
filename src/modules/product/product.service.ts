@@ -9,6 +9,7 @@ import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductTag } from '@/modules/product/entities/product-tag.entity';
 import { TagService } from '../tag/tag.service';
 import { BrandService } from '../brand/brand.service';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProductService {
@@ -66,6 +67,22 @@ export class ProductService {
     }
   }
 
+  async findProductsByName(name: string): Promise<Product[]> {
+    try {
+      return this.productModel.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${name}%`,
+          },
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Could not find products: ${error}`,
+      );
+    }
+  }
+
   async create(product: CreateProductDto): Promise<Product> {
     const { name, description, prescriptionRequired, brandId, tagIds } =
       product;
@@ -100,7 +117,8 @@ export class ProductService {
   }
 
   async update(product: UpdateProductDto, productId: number): Promise<Product> {
-    const { tagIds, brandId } = product;
+    const { name, description, prescriptionRequired, brandId, tagIds } =
+      product;
 
     if (tagIds) {
       await this.tagService.validateTagIds(tagIds);
@@ -110,9 +128,17 @@ export class ProductService {
       await this.brandService.findById(brandId);
     }
 
-    const [updatedRows] = await this.productModel.update(product, {
-      where: { id: productId },
-    });
+    const [updatedRows] = await this.productModel.update(
+      {
+        name: name,
+        description: description,
+        prescription_required: prescriptionRequired,
+        brand_id: brandId,
+      },
+      {
+        where: { id: productId },
+      },
+    );
 
     if (updatedRows === 0) throw new NotFoundException('Product not found');
 

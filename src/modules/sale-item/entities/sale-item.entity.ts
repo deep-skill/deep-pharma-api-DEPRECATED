@@ -8,8 +8,8 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { ConcentrationUnit } from '../../concentration-unit/entities/concentration-unit.entity';
-import { StockItem } from '../../stock-item/entities/stock-item.entity';
+import { ConcentrationUnit } from '@/modules/concentration-unit/entities/concentration-unit.entity';
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 import { Product } from '@/modules/product/entities/product.entity';
 
 @Table({

@@ -1,14 +1,5 @@
-import {
-  Column,
-  Model,
-  Table,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-  Index,
-  HasMany,
-} from 'sequelize-typescript';
-import { Product } from '../../product/entities/product.entity';
+import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
+import { Product } from '@/modules/product/entities/product.entity';
 
 @Table({
   paranoid: true,

@@ -60,9 +60,17 @@ export class ProviderService {
   }
 
   async update(provider: UpdateProviderDto, id: number) {
-    const [updatedRows] = await this.providerModel.update(provider, {
-      where: { id },
-    });
+    const { RUC, legalName } = provider;
+
+    const [updatedRows] = await this.providerModel.update(
+      {
+        RUC: RUC,
+        legal_name: legalName,
+      },
+      {
+        where: { id },
+      },
+    );
 
     if (updatedRows === 0) return new NotFoundException('Provider not found');
 

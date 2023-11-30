@@ -9,8 +9,8 @@ import {
   BelongsToMany,
   HasMany,
 } from 'sequelize-typescript';
-import { Brand } from '../../brand/entities/brand.entity';
-import { Tag } from '../../tag/entities/tag.entity';
+import { Brand } from '@/modules/brand/entities/brand.entity';
+import { Tag } from '@/modules/tag/entities/tag.entity';
 import { ProductTag } from './product-tag.entity';
 import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
 

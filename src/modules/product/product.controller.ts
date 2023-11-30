@@ -36,6 +36,8 @@ export class ProductController {
   getAllProducts(
     @Query('includeDeleted') includeDeleted = false,
   ): Promise<Product[]> {
+    console.log('hello');
+
     return this.productService.findAll(includeDeleted);
   }
 
@@ -60,6 +62,21 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Product[]> {
     return this.productService.findProductsByBrandId(id);
+  }
+
+  @Get('product/name/:name')
+  @ApiParam({
+    name: 'name',
+    required: true,
+    type: 'string',
+    description: 'Find products by name',
+  })
+  @ApiOkResponse({
+    type: [Product],
+    description: 'Products obtained by name',
+  })
+  getProductsByName(@Param('name') name: string): Promise<Product[]> {
+    return this.productService.findProductsByName(name);
   }
 
   @Post('product')
