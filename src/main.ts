@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import * as nocache from 'nocache';
+import nocache from 'nocache';
 import { setupSwagger } from './swagger';
 import { AppModule } from './app.module';
 import { seedDatabaseWithMockInformation } from 'assets/load-data';
