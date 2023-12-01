@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 import { isProduction } from '@/utils/constants';
 
-export default registerAs('databaseConfig', () => {
+export default registerAs('databaseConfig', async () => {
   return {
     database: {
       dialect: 'mysql' as Dialect,
@@ -13,7 +13,6 @@ export default registerAs('databaseConfig', () => {
       database: process.env.DB_NAME,
       autoLoadModels: !isProduction,
       synchronize: !isProduction,
-      force: !isProduction,
     },
   };
 });
