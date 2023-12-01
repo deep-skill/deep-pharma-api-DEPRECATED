@@ -4,11 +4,11 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class CreateProviderDto {
   @IsNotEmpty()
   @IsString()
-  RUC: string;
+  readonly RUC: string;
 
   @IsNotEmpty()
   @IsString()
-  legalName: string;
+  readonly legalName: string;
 }
 
 export class UpdateProviderDto extends PartialType(CreateProviderDto) {}

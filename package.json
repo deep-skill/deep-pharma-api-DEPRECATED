@@ -29,6 +29,7 @@
     "@nestjs/swagger": "^7.1.16",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "dotenv": "^16.3.1",
     "express-oauth2-jwt-bearer": "^1.6.0",
     "mysql2": "^3.6.3",
     "nocache": "^4.0.0",

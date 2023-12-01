@@ -4,12 +4,12 @@ import { PartialType } from '@nestjs/swagger';
 export class CreateInventoryDto {
   @IsNotEmpty()
   @IsNumber()
-  venueId: number;
+  readonly venueId: number;
 
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  name: string;
+  readonly name: string;
 }
 
 export class UpdateInventoryDto extends PartialType(CreateInventoryDto) {}

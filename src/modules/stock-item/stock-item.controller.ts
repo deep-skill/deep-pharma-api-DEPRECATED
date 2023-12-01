@@ -18,16 +18,16 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { StockItemsService } from './stock-item.service';
+import { StockItemService } from './stock-item.service';
 import { CreateStockItemDto, UpdateStockItemDto } from './dto/stock-item.dto';
 import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 
 @ApiTags('stock-item')
-@Controller('stock-item')
-export class StockItemsController {
-  constructor(private readonly stockItemsService: StockItemsService) {}
+@Controller()
+export class StockItemController {
+  constructor(private readonly stockItemsService: StockItemService) {}
 
-  @Get()
+  @Get('stock-item')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
@@ -39,7 +39,7 @@ export class StockItemsController {
     return this.stockItemsService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('stock-item/:id')
   @ApiOkResponse({ type: StockItem })
   @ApiParam({
     name: 'id',
@@ -51,7 +51,7 @@ export class StockItemsController {
     return this.stockItemsService.findById(id);
   }
 
-  @Get(':foreignKey/:id')
+  @Get(':foreignKey/:id/stock-item')
   @ApiOkResponse({
     type: [StockItem],
     description: 'Stock items obtained by several foreign keys',
@@ -61,7 +61,7 @@ export class StockItemsController {
     required: true,
     type: 'string',
     description:
-      'Foreign key options: inventory_id, supply_invoice_id, sale_item_id',
+      'Foreign key options: inventory-id, supply-invoice-id, sale-item-id',
   })
   @ApiParam({
     name: 'id',
@@ -76,7 +76,7 @@ export class StockItemsController {
     return this.stockItemsService.findByForeignKey(id, foreignKey);
   }
 
-  @Post()
+  @Post('stock-item')
   @ApiCreatedResponse({
     type: StockItem,
     description: 'Create stock item',
@@ -85,7 +85,7 @@ export class StockItemsController {
     return this.stockItemsService.create(stockItem);
   }
 
-  @Put(':id')
+  @Put('stock-item/:id')
   @ApiOkResponse({
     type: StockItem,
     description: 'Update stock item',
@@ -97,7 +97,7 @@ export class StockItemsController {
     return this.stockItemsService.update(stockItem, id);
   }
 
-  @Delete(':id')
+  @Delete('stock-item/:id')
   @ApiOkResponse({
     type: StockItem,
     description: 'Delete soft stock item',

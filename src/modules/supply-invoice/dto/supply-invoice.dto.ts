@@ -12,21 +12,21 @@ import { InvoiceType } from '@/modules/supply-invoice/entities/supply-invoice.en
 export class CreateSupplyInvoiceDto {
   @IsNotEmpty()
   @IsEnum(InvoiceType)
-  invoiceType: InvoiceType;
+  readonly invoiceType: InvoiceType;
 
   @IsNotEmpty()
   @IsString()
-  code: string;
+  readonly code: string;
 
   @IsNotEmpty()
   @IsOptional()
   @IsDateString()
-  deliveredAt: Date;
+  readonly deliveredAt: Date;
 
   @IsNotEmpty()
   @IsOptional()
   @IsInt()
-  providerId: number;
+  readonly providerId: number;
 }
 
 export class UpdateSupplyInvoiceDto extends PartialType(

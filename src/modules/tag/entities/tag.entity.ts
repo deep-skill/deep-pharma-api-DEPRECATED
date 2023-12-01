@@ -6,8 +6,8 @@ import {
   Index,
   BelongsToMany,
 } from 'sequelize-typescript';
-import { Product } from '../../product/entities/product.entity';
-import { ProductTag } from '../../product/entities/product-tag.entity';
+import { Product } from '@/modules/product/entities/product.entity';
+import { ProductTag } from '@/modules/product/entities/product-tag.entity';
 
 @Table({
   paranoid: true,

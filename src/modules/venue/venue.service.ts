@@ -1,6 +1,4 @@
 import {
-  BadRequestException,
-  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -20,14 +18,12 @@ export class VenueService {
   async findAll(includeDeleted: boolean): Promise<Venue[]> {
     try {
       if (includeDeleted) {
-        return this.venueModel.findAll();
+        return this.venueModel.findAll({
+          paranoid: false,
+        });
       }
 
-      return this.venueModel.findAll({
-        where: {
-          deleted_at: null,
-        },
-      });
+      return this.venueModel.findAll();
     } catch (error) {
       throw new InternalServerErrorException(
         `Failed to obtain venues: ${error.message}`,

@@ -28,14 +28,14 @@ export class ProviderService {
   }
 
   async findById(id: number): Promise<Provider> {
+    const providerFound = await this.providerModel.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!providerFound)
+      throw new NotFoundException("The provider id was't found");
+
     try {
-      const providerFound = await this.providerModel.findByPk(id, {
-        paranoid: false,
-      });
-
-      if (!providerFound)
-        throw new NotFoundException("The provider id was't found");
-
       return providerFound;
     } catch (error) {
       throw new InternalServerErrorException(
@@ -46,9 +46,11 @@ export class ProviderService {
 
   async create(provider: CreateProviderDto): Promise<Provider> {
     try {
+      const { RUC, legalName } = provider;
+
       return this.providerModel.create({
-        RUC: provider.RUC,
-        legal_name: provider.legalName,
+        RUC: RUC,
+        legal_name: legalName,
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -58,13 +60,21 @@ export class ProviderService {
   }
 
   async update(provider: UpdateProviderDto, id: number) {
-    try {
-      const [updatedRows] = await this.providerModel.update(provider, {
+    const { RUC, legalName } = provider;
+
+    const [updatedRows] = await this.providerModel.update(
+      {
+        RUC: RUC,
+        legal_name: legalName,
+      },
+      {
         where: { id },
-      });
+      },
+    );
 
-      if (updatedRows === 0) return new NotFoundException('Provider not found');
+    if (updatedRows === 0) return new NotFoundException('Provider not found');
 
+    try {
       return this.findById(id);
     } catch (error) {
       return new InternalServerErrorException(
@@ -74,14 +84,13 @@ export class ProviderService {
   }
 
   async softDelete(id: number) {
+    const deletedItems = await this.providerModel.destroy({
+      where: { id },
+    });
+
+    if (deletedItems === 0) return new NotFoundException('Provider not found');
+
     try {
-      const deletedItems = await this.providerModel.destroy({
-        where: { id },
-      });
-
-      if (deletedItems === 0)
-        return new NotFoundException('Provider not found');
-
       return this.findById(id);
     } catch (error) {
       return new InternalServerErrorException(

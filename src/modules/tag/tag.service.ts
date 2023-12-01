@@ -28,13 +28,13 @@ export class TagService {
   }
 
   async findById(id: number): Promise<Tag> {
+    const tagFound = await this.tagModel.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!tagFound) throw new NotFoundException('Tag not found');
+
     try {
-      const tagFound = await this.tagModel.findByPk(id, {
-        paranoid: false,
-      });
-
-      if (!tagFound) throw new NotFoundException('Tag not found');
-
       return tagFound;
     } catch (error) {
       throw new InternalServerErrorException(`Could not find tag: ${error}`);
@@ -47,7 +47,7 @@ export class TagService {
 
       return this.tagModel.create({
         name: name,
-        category: category ?? null,
+        category: category,
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -57,13 +57,21 @@ export class TagService {
   }
 
   async update(tag: UpdateTagDto, id: number): Promise<Tag> {
-    try {
-      const [updatedRows] = await this.tagModel.update(tag, {
+    const { name, category } = tag;
+
+    const [updatedRows] = await this.tagModel.update(
+      {
+        name: name,
+        category: category,
+      },
+      {
         where: { id },
-      });
+      },
+    );
 
-      if (updatedRows === 0) throw new NotFoundException('Tag not found');
+    if (updatedRows === 0) throw new NotFoundException('Tag not found');
 
+    try {
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
@@ -73,13 +81,13 @@ export class TagService {
   }
 
   async softDelete(id: number): Promise<Tag> {
+    const deletedRows = await this.tagModel.destroy({
+      where: { id },
+    });
+
+    if (deletedRows === 0) throw new NotFoundException('Tag not found');
+
     try {
-      const deletedRows = await this.tagModel.destroy({
-        where: { id },
-      });
-
-      if (deletedRows === 0) throw new NotFoundException('Tag not found');
-
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
@@ -89,19 +97,13 @@ export class TagService {
   }
 
   async validateTagIds(tagIds: number[]) {
-    try {
-      for (const tagId of tagIds) {
-        const tag = await this.tagModel.findByPk(tagId);
-        if (!tag) {
-          throw new BadRequestException(
-            'One or more of the tag ids you have provided does not exit',
-          );
-        }
+    for (const tagId of tagIds) {
+      const tag = await this.tagModel.findByPk(tagId);
+      if (!tag) {
+        throw new BadRequestException(
+          'One or more of the tag ids you have provided does not exit',
+        );
       }
-
-      return true;
-    } catch (error) {
-      throw new HttpException(error, 400);
     }
   }
 }

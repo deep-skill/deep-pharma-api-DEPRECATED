@@ -23,7 +23,7 @@ import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 import { Inventory } from '@/modules/inventory/entities/inventory.entity';
 
 @ApiTags('inventory')
-@Controller('inventory')
+@Controller()
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
@@ -35,9 +35,7 @@ export class InventoryController {
     description: 'Include deleted inventories',
   })
   @ApiOkResponse({ type: [Inventory] })
-  getAllInventories(
-    @Query('includeDeleted', ParseBoolPipe) includeDeleted: boolean = false,
-  ) {
+  getAllInventories(@Query('includeDeleted') includeDeleted: boolean = false) {
     return this.inventoryService.findAll(includeDeleted);
   }
 

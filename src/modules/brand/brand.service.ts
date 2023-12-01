@@ -26,14 +26,14 @@ export class BrandService {
   }
 
   async findById(id: number): Promise<Brand> {
+    const brandFound = await this.brandModel.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!brandFound)
+      throw new NotFoundException("The brand id provided wasn't fount");
+
     try {
-      const brandFound = await this.brandModel.findByPk(id, {
-        paranoid: false,
-      });
-
-      if (!brandFound)
-        throw new NotFoundException("The brand id provided wasn't fount");
-
       return brandFound;
     } catch (error) {
       throw new InternalServerErrorException(`Could not find brand: ${error}`);
@@ -55,13 +55,13 @@ export class BrandService {
   }
 
   async update(brand: UpdateBrandDto, id: number): Promise<Brand> {
+    const [updatedRows] = await this.brandModel.update(brand, {
+      where: { id },
+    });
+
+    if (updatedRows === 0) throw new NotFoundException('Brand not found');
+
     try {
-      const [updatedRows] = await this.brandModel.update(brand, {
-        where: { id },
-      });
-
-      if (updatedRows === 0) throw new NotFoundException('Brand not found');
-
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(
@@ -71,13 +71,13 @@ export class BrandService {
   }
 
   async softDelete(id: number): Promise<Brand> {
+    const deletedRows = await this.brandModel.destroy({
+      where: { id },
+    });
+
+    if (deletedRows === 0) throw new NotFoundException('Brand not found');
+
     try {
-      const deletedRows = await this.brandModel.destroy({
-        where: { id },
-      });
-
-      if (deletedRows === 0) throw new NotFoundException('Brand not found');
-
       return this.findById(id);
     } catch (error) {
       throw new InternalServerErrorException(

@@ -1,7 +1,6 @@
 import {
   Controller,
   ParseIntPipe,
-  ParseBoolPipe,
   Param,
   Query,
   Body,
@@ -21,11 +20,11 @@ import {
 import { Brand } from './entities/brand.entity';
 
 @ApiTags('brand')
-@Controller('brand')
+@Controller()
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
-  @Get()
+  @Get('brand')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
@@ -34,18 +33,18 @@ export class BrandController {
   })
   @ApiOkResponse({ type: [Brand] })
   getBrands(
-    @Query('includeDeleted', ParseBoolPipe) includeDeletd: boolean = false,
+    @Query('includeDeleted') includeDeleted: boolean = false,
   ): Promise<Brand[]> {
-    return this.brandService.findAll(includeDeletd);
+    return this.brandService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('brand/:id')
   @ApiOkResponse({ type: Brand })
   getBrandById(@Param('id', ParseIntPipe) id: number): Promise<Brand> {
     return this.brandService.findById(id);
   }
 
-  @Post()
+  @Post('brand')
   @ApiCreatedResponse({
     type: Brand,
     description: 'Create brand',
@@ -54,7 +53,7 @@ export class BrandController {
     return this.brandService.create(brand);
   }
 
-  @Put(':id')
+  @Put('brand/:id')
   @ApiOkResponse({
     type: Brand,
     description: 'Update brand',
@@ -66,7 +65,7 @@ export class BrandController {
     return this.brandService.update(brand, id);
   }
 
-  @Delete(':id')
+  @Delete('brand/:id')
   @ApiOkResponse({
     type: Brand,
     description: 'Delete soft brand',
