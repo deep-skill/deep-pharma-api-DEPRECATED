@@ -8,8 +8,9 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { ConcentrationUnit } from '../../concentration-unit/entities/concentration-unit.entity';
-import { StockItem } from '../../stock-item/entities/stock-item.entity';
+import { ConcentrationUnit } from '@/modules/concentration-unit/entities/concentration-unit.entity';
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
+import { Product } from '@/modules/product/entities/product.entity';
 
 @Table({
   paranoid: true,
@@ -27,6 +28,14 @@ export class SaleItem extends Model {
   })
   id: number;
 
+  @Index({ name: 'fk_sale_items_products1_idx' })
+  @ForeignKey(() => Product)
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+  })
+  product_id: number;
+
   @Column
   label: string;
 
@@ -40,7 +49,7 @@ export class SaleItem extends Model {
   @Index('fk_venues_drugstore_id1_idx')
   @Column({
     type: DataType.BIGINT,
-    allowNull: false,
+    allowNull: true,
   })
   concentration_unit_id: number;
 
@@ -49,4 +58,7 @@ export class SaleItem extends Model {
 
   @HasMany(() => StockItem)
   StockItems: StockItem[];
+
+  @BelongsTo(() => Product)
+  product: Product;
 }

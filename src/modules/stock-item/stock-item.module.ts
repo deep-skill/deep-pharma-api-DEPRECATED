@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { StockItemsController } from './stock-item.controller';
-import { StockItemsService } from './stock-item.service';
+import { StockItemController } from './stock-item.controller';
+import { StockItemService } from './stock-item.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 import { InventoryModule } from '../inventory/inventory.module';
@@ -14,7 +14,7 @@ import { SaleItemModule } from '../sale-item/sale-item.module';
     SupplyInvoiceModule,
     SaleItemModule,
   ],
-  controllers: [StockItemsController],
-  providers: [StockItemsService],
+  controllers: [StockItemController],
+  providers: [StockItemService],
 })
-export class StockItemsModule {}
+export class StockItemModule {}

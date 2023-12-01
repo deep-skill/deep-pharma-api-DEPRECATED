@@ -4,7 +4,7 @@ import {
   IsNotEmpty,
   IsDateString,
   IsEnum,
-  IsNumber,
+  IsInt,
   IsOptional,
 } from 'class-validator';
 import { InvoiceType } from '@/modules/supply-invoice/entities/supply-invoice.entity';
@@ -12,19 +12,21 @@ import { InvoiceType } from '@/modules/supply-invoice/entities/supply-invoice.en
 export class CreateSupplyInvoiceDto {
   @IsNotEmpty()
   @IsEnum(InvoiceType)
-  invoice_type: InvoiceType;
+  readonly invoiceType: InvoiceType;
 
   @IsNotEmpty()
   @IsString()
-  code: string;
+  readonly code: string;
 
   @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
-  delivered_at: Date;
+  readonly deliveredAt: Date;
 
   @IsNotEmpty()
-  @IsNumber()
-  provider_id: number;
+  @IsOptional()
+  @IsInt()
+  readonly providerId: number;
 }
 
 export class UpdateSupplyInvoiceDto extends PartialType(

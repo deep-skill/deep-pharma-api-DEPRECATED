@@ -13,6 +13,7 @@ export default registerAs('databaseConfig', () => {
       database: process.env.DB_NAME,
       autoLoadModels: !isProduction,
       synchronize: !isProduction,
+      force: !isProduction,
     },
   };
 });

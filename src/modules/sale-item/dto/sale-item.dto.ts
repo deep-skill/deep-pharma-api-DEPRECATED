@@ -14,9 +14,14 @@ export class CreateSaleItemDto {
   @IsNumber()
   readonly concentration: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  readonly concentrationUnitId: number;
+  @IsNotEmpty()
+  readonly concentrationUnitId?: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly productId: number;
 }
 
 export class UpdateSaleItemDto extends PartialType(CreateSaleItemDto) {}

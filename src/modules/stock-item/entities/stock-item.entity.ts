@@ -1,3 +1,6 @@
+import { Inventory } from '@/modules/inventory/entities/inventory.entity';
+import { SaleItem } from '@/modules/sale-item/entities/sale-item.entity';
+import { SupplyInvoice } from '@/modules/supply-invoice/entities/supply-invoice.entity';
 import {
   Column,
   Model,
@@ -8,13 +11,10 @@ import {
   BelongsTo,
   Index,
 } from 'sequelize-typescript';
-import { Inventory } from '../../inventory/entities/inventory.entity';
-import { SupplyInvoice } from '../../supply-invoice/entities/supply-invoice.entity';
-import { SaleItem } from '../../sale-item/entities/sale-item.entity';
 
 @Table({
   paranoid: true,
-  tableName: 'Stock_items',
+  tableName: 'stock_items',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',
@@ -42,7 +42,7 @@ export class StockItem extends Model {
     type: DataType.BIGINT,
     allowNull: false,
   })
-  SupplyInvoice_id: number;
+  supply_invoice_id: number;
 
   @Index({ name: 'fk_stock_items_sale_items1_idx' })
   @ForeignKey(() => SaleItem)
@@ -55,10 +55,11 @@ export class StockItem extends Model {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   })
   quantity: number;
 
-  @Index({ name: 'idx_stock_items_name' })
+  @Index({ name: 'idx_stock_items_name', type: 'FULLTEXT' })
   @Column({ type: DataType.STRING })
   comment: string;
 

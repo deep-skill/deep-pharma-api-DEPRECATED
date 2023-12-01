@@ -10,27 +10,27 @@ import {
 export class CreateStockItemDto {
   @IsNotEmpty()
   @IsNumber()
-  inventory_id: number;
+  readonly inventoryId: number;
 
   @IsNotEmpty()
   @IsNumber()
-  supply_invoice_id: number;
+  readonly supplyInvoiceId: number;
 
   @IsNotEmpty()
   @IsNumber()
-  sale_item_id: number;
+  readonly saleItemId: number;
 
   @IsNotEmpty()
   @IsNumber()
-  quantity: number;
+  readonly quantity: number;
 
   @IsOptional()
   @IsString()
-  comment?: string;
+  readonly comment?: string;
 
   @IsOptional()
   @IsDateString()
-  expires_at?: string;
+  readonly expiresAt?: string;
 }
 
 export class UpdateStockItemDto extends PartialType(CreateStockItemDto) {}

@@ -1,3 +1,5 @@
+import { Provider } from '@/modules/provider/entities/provider.entity';
+import { StockItem } from '@/modules/stock-item/entities/stock-item.entity';
 import {
   Table,
   Model,
@@ -8,8 +10,6 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { Provider } from '../../provider/entities/provider.entity';
-import { StockItem } from '../../stock-item/entities/stock-item.entity';
 
 export enum InvoiceType {
   RECEIPT = 'receipt',
@@ -18,7 +18,7 @@ export enum InvoiceType {
 
 @Table({
   paranoid: true,
-  tableName: 'Supply_invoices',
+  tableName: 'supply_invoices',
   deletedAt: 'deleted_at',
   createdAt: 'created_at',
   updatedAt: 'updated_at',

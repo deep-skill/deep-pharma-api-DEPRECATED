@@ -10,8 +10,11 @@ import { DrugstoreModule } from './modules/drugstore/drugstore.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { ProviderModule } from './modules/provider/provider.module';
 import { SaleItemModule } from './modules/sale-item/sale-item.module';
-import { StockItemsModule } from './modules/stock-item/stock-item.module';
+import { StockItemModule } from './modules/stock-item/stock-item.module';
 import { SupplyInvoiceModule } from './modules/supply-invoice/supply-invoice.module';
+import { ProductModule } from './modules/product/product.module';
+import { BrandModule } from './modules/brand/brand.module';
+import { TagModule } from './modules/tag/tag.module';
 import { VenueModule } from './modules/venue/venue.module';
 
 @Module({
@@ -33,8 +36,11 @@ import { VenueModule } from './modules/venue/venue.module';
     InventoryModule,
     ProviderModule,
     SaleItemModule,
-    StockItemsModule,
+    StockItemModule,
     SupplyInvoiceModule,
+    ProductModule,
+    BrandModule,
+    TagModule,
     VenueModule,
   ],
   controllers: [],

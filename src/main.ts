@@ -2,9 +2,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import * as nocache from 'nocache';
-
-import { AppModule } from '@/app.module';
-import { setupSwagger } from '@/swagger';
+import { setupSwagger } from './swagger';
+import { AppModule } from './app.module';
+import { seedDatabaseWithMockInformation } from 'assets/load-data';
+import { isProduction } from './utils/constants';
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVariables = ['PORT', 'ISSUER_BASE_URL', 'AUDIENCE'];
@@ -40,7 +41,11 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  await app.listen(configService.get<string>('PORT'));
+  await app.listen(configService.get<string>('PORT'), async () => {
+    if (!isProduction) {
+      await seedDatabaseWithMockInformation();
+    }
+  });
 }
 
 bootstrap();

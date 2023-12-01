@@ -21,11 +21,11 @@ import { CreateProviderDto, UpdateProviderDto } from './dto/provider.dto';
 import { Provider } from '@/modules/provider/entities/provider.entity';
 
 @ApiTags('provider')
-@Controller('provider')
+@Controller()
 export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 
-  @Get()
+  @Get('provider')
   @ApiQuery({
     name: 'includeDeleted',
     required: false,
@@ -37,13 +37,13 @@ export class ProviderController {
     return this.providerService.findAll(includeDeleted);
   }
 
-  @Get(':id')
+  @Get('provider/:id')
   @ApiOkResponse({ type: Provider })
   getProviderById(@Param('id', ParseIntPipe) id: number) {
     return this.providerService.findById(id);
   }
 
-  @Post()
+  @Post('provider')
   @ApiCreatedResponse({
     type: Provider,
     description: 'Create provider',
@@ -52,7 +52,7 @@ export class ProviderController {
     return this.providerService.create(provider);
   }
 
-  @Put(':id')
+  @Put('provider/:id')
   @ApiOkResponse({
     type: Provider,
     description: 'Update provider',
@@ -64,7 +64,7 @@ export class ProviderController {
     return this.providerService.update(provider, id);
   }
 
-  @Delete(':id')
+  @Delete('provider/:id')
   @ApiOkResponse({
     type: Provider,
     description: 'Delete soft provider',
