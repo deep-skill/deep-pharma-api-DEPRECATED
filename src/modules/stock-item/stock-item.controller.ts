@@ -8,7 +8,6 @@ import {
   Delete,
   Body,
   ParseIntPipe,
-  ParseBoolPipe,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,

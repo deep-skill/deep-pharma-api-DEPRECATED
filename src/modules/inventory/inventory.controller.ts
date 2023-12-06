@@ -1,7 +1,6 @@
 import {
   Controller,
   ParseIntPipe,
-  ParseBoolPipe,
   Param,
   Query,
   Body,

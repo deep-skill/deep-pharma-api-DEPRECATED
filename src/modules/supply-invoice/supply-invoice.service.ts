@@ -79,10 +79,6 @@ export class SupplyInvoiceService {
     await this.providerService.findById(providerId);
 
     try {
-      const { providerId, invoiceType, code, deliveredAt } = supplyInvoice;
-
-      await this.providerService.findById(providerId);
-
       return this.supplyInvoiceModel.create({
         provider_id: providerId,
         invoice_type: invoiceType,
