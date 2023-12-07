@@ -20,18 +20,18 @@ export class ProductService {
     @InjectModel(ProductTag) private productTagModel: typeof ProductTag,
     private readonly tagService: TagService,
     private readonly brandService: BrandService,
-  ) {}
+  ) { }
 
   async findAll(includeDeleted: boolean): Promise<Product[]> {
     try {
       if (includeDeleted) {
         return this.productModel.findAll({
-          include:[
+          include: [
             {
               model: Brand,
             },
             {
-              model: Tag, 
+              model: Tag,
             },
           ],
           paranoid: false,
@@ -39,12 +39,12 @@ export class ProductService {
       }
 
       return this.productModel.findAll({
-        include:[
+        include: [
           {
             model: Brand,
           },
           {
-            model: Tag, 
+            model: Tag,
           },
         ],
         paranoid: false,
@@ -58,12 +58,12 @@ export class ProductService {
 
   async findById(id: number): Promise<Product> {
     const productFound = await this.productModel.findByPk(id, {
-      include:[
+      include: [
         {
           model: Brand,
         },
         {
-          model: Tag, 
+          model: Tag,
         },
       ],
       paranoid: false,
