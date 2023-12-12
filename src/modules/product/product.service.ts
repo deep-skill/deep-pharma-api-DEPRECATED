@@ -10,6 +10,8 @@ import { ProductTag } from '@/modules/product/entities/product-tag.entity';
 import { TagService } from '../tag/tag.service';
 import { BrandService } from '../brand/brand.service';
 import { Op } from 'sequelize';
+import { Brand } from '../brand/entities/brand.entity';
+import { Tag } from '../tag/entities/tag.entity';
 
 @Injectable()
 export class ProductService {
@@ -18,17 +20,35 @@ export class ProductService {
     @InjectModel(ProductTag) private productTagModel: typeof ProductTag,
     private readonly tagService: TagService,
     private readonly brandService: BrandService,
-  ) {}
+  ) { }
 
   async findAll(includeDeleted: boolean): Promise<Product[]> {
     try {
       if (includeDeleted) {
         return this.productModel.findAll({
+          include: [
+            {
+              model: Brand,
+            },
+            {
+              model: Tag,
+            },
+          ],
           paranoid: false,
         });
       }
 
-      return this.productModel.findAll();
+      return this.productModel.findAll({
+        include: [
+          {
+            model: Brand,
+          },
+          {
+            model: Tag,
+          },
+        ],
+        paranoid: false,
+      });
     } catch (error) {
       throw new InternalServerErrorException(
         `Could not find products: ${error}`,
@@ -38,8 +58,17 @@ export class ProductService {
 
   async findById(id: number): Promise<Product> {
     const productFound = await this.productModel.findByPk(id, {
+      include: [
+        {
+          model: Brand,
+        },
+        {
+          model: Tag,
+        },
+      ],
       paranoid: false,
-    });
+    },
+    );
 
     if (!productFound)
       throw new NotFoundException("The product id provided wasn't found");
