@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { CreateBrandDto, UpdateBrandDto } from './dto/brand.dto';
@@ -18,6 +19,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Brand } from './entities/brand.entity';
+
+import { AuthorizationGuard } from '@/authorization/authorization.guard';
+
 
 @ApiTags('brand')
 @Controller()
@@ -38,12 +42,14 @@ export class BrandController {
     return this.brandService.findAll(includeDeleted);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Get('brand/:id')
   @ApiOkResponse({ type: Brand })
   getBrandById(@Param('id', ParseIntPipe) id: number): Promise<Brand> {
     return this.brandService.findById(id);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Post('brand')
   @ApiCreatedResponse({
     type: Brand,
