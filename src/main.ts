@@ -6,6 +6,9 @@ import { setupSwagger } from './swagger';
 import { AppModule } from './app.module';
 import { seedDatabaseWithMockInformation } from 'assets/load-data';
 import { isProduction } from './utils/constants';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVariables = ['PORT', 'ISSUER_BASE_URL', 'AUDIENCE'];
