@@ -29,6 +29,7 @@ export class AuthorizationGuard implements CanActivate {
     try {
       await validateAccessToken(request, response);
 
+
       return true;
     } catch (error) {
       if (error instanceof InvalidTokenError) {
