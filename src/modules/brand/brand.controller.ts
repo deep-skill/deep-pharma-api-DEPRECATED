@@ -22,7 +22,7 @@ import { Brand } from './entities/brand.entity';
 
 import { AuthorizationGuard } from '@/authorization/authorization.guard';
 
-
+@UseGuards(AuthorizationGuard)
 @ApiTags('brand')
 @Controller()
 export class BrandController {
@@ -42,14 +42,14 @@ export class BrandController {
     return this.brandService.findAll(includeDeleted);
   }
 
-  @UseGuards(AuthorizationGuard)
+
   @Get('brand/:id')
   @ApiOkResponse({ type: Brand })
   getBrandById(@Param('id', ParseIntPipe) id: number): Promise<Brand> {
     return this.brandService.findById(id);
   }
 
-  @UseGuards(AuthorizationGuard)
+
   @Post('brand')
   @ApiCreatedResponse({
     type: Brand,
@@ -68,6 +68,8 @@ export class BrandController {
     @Body() brand: UpdateBrandDto,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Brand> {
+    console.log('updateBrand', brand)
+    console.log('updateBrand', id)
     return this.brandService.update(brand, id);
   }
 
