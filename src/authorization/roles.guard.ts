@@ -23,7 +23,7 @@ export class RolesGuard implements CanActivate {
       issuer: process.env.AUTH0_ISSUER_BASE_URL,
       tokenSigningAlg: process.env.TOKEN_ALG,
     }).payload.user_roles;
-    console.log(userRoles);
+
     const hasRoles = roles.some((role: string) => userRoles.includes(role));
 
     if (!hasRoles) {
