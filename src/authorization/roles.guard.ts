@@ -19,9 +19,9 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const userRoles = request.auth({
-      audience: 'http://localhost:3001/',
-        issuer: 'https://dev-nqzpabibd42atqci.us.auth0.com/',
-        tokenSigningAlg: 'RS256',
+      audience: process.env.AUDIENCE,
+      issuer: process.env.AUTH0_ISSUER_BASE_URL,
+      tokenSigningAlg: process.env.TOKEN_ALG,
     }).payload.user_roles;
     console.log(userRoles);
     const hasRoles = roles.some((role: string) => userRoles.includes(role));
