@@ -46,6 +46,11 @@ export class TagController {
     return this.tagService.findById(id);
   }
 
+  @Get('tag-search/')
+  getTagSearch(@Query('query') query : string): Promise<{ rows: Tag[]; count: number; }>  {
+    return this.tagService.getTagSearch(query)
+  }
+
   @Post('tag')
   @ApiCreatedResponse({
     type: Tag,
