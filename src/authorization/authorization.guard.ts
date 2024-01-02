@@ -24,7 +24,6 @@ export class AuthorizationGuard implements CanActivate {
       issuer: process.env.AUTH0_ISSUER_BASE_URL,
       tokenSigningAlg: process.env.TOKEN_ALG,
     }));
-
     try {
       await validateAccessToken(request, response);
       return true;

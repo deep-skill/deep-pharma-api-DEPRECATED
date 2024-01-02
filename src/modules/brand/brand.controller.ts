@@ -24,7 +24,6 @@ import { AuthorizationGuard } from '@/authorization/authorization.guard';
 import { PermissionsGuard } from '@/authorization/permissions.guard';
 
 @UseGuards(AuthorizationGuard)
-
 @ApiTags('brand')
 @Controller()
 export class BrandController {
@@ -72,8 +71,6 @@ export class BrandController {
     @Body() brand: UpdateBrandDto,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Brand> {
-    console.log('updateBrand', brand)
-    console.log('updateBrand', id)
     return this.brandService.update(brand, id);
   }
 
