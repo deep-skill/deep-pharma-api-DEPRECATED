@@ -19,8 +19,9 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthorizationGuard } from '@/authorization/authorization.guard';
 
-
+@UseGuards(AuthorizationGuard)
 @ApiTags('tag')
 @Controller()
 export class TagController {
@@ -57,6 +58,7 @@ export class TagController {
     description: 'Create tag',
   })
   createBrand(@Body() tag: CreateTagDto): Promise<Tag> {
+    console.log(tag)
     return this.tagService.create(tag);
   }
 

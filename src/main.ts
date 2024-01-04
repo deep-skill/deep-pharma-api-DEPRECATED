@@ -4,9 +4,10 @@ import { ConfigService } from '@nestjs/config';
 import nocache from 'nocache';
 import { setupSwagger } from './swagger';
 import { AppModule } from './app.module';
-import { seedDatabaseWithMockInformation } from 'assets/load-data';
+
 import { isProduction } from './utils/constants';
 import * as dotenv from 'dotenv';
+import { seedDatabaseWithMockInformation } from './assets/load-data';
 
 dotenv.config();
 
