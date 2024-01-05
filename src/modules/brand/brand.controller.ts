@@ -8,6 +8,8 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
+  SetMetadata
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { CreateBrandDto, UpdateBrandDto } from './dto/brand.dto';
@@ -18,12 +20,17 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Brand } from './entities/brand.entity';
+import { AuthorizationGuard } from '@/authorization/authorization.guard';
+import { PermissionsGuard } from '@/authorization/permissions.guard';
 
+@UseGuards(AuthorizationGuard)
 @ApiTags('brand')
 @Controller()
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
+  @UseGuards(PermissionsGuard)
+  @SetMetadata('permissions', ['admin'])
   @Get('brand')
   @ApiQuery({
     name: 'includeDeleted',
@@ -38,11 +45,13 @@ export class BrandController {
     return this.brandService.findAll(includeDeleted);
   }
 
+
   @Get('brand/:id')
   @ApiOkResponse({ type: Brand })
   getBrandById(@Param('id', ParseIntPipe) id: number): Promise<Brand> {
     return this.brandService.findById(id);
   }
+
 
   @Post('brand')
   @ApiCreatedResponse({

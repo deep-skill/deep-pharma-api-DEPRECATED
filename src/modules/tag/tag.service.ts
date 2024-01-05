@@ -4,10 +4,18 @@ import {
   InternalServerErrorException,
   HttpException,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Tag } from '@/modules/tag/entities/tag.entity';
 import { CreateTagDto, UpdateTagDto } from './dto/tag.dto';
+import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
+
+
+
+
+
 
 @Injectable()
 export class TagService {
@@ -106,4 +114,29 @@ export class TagService {
       }
     }
   }
+
+  async getTagSearch(query?: string, limit = 10, page = 1): Promise<{ rows: Tag[], count: number }> {
+    let whereCondition = {};
+
+    if (query) {
+      whereCondition = {
+        name: {
+          [Op.like]: `%${query.toLowerCase()}%`
+        },
+        category: {
+          [Op.like]: `%${query.toLowerCase()}%`
+        }
+      };
+    }
+
+    const result = await this.tagModel.findAndCountAll({
+      limit: limit,
+      offset: (page - 1) * limit,
+      where: whereCondition,
+    });
+
+    return result;
+  }
+
+
 }

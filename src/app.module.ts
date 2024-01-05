@@ -17,6 +17,7 @@ import { BrandModule } from './modules/brand/brand.module';
 import { TagModule } from './modules/tag/tag.module';
 import { VenueModule } from './modules/venue/venue.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({

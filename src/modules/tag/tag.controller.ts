@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto, UpdateTagDto } from './dto/tag.dto';
@@ -18,7 +19,9 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthorizationGuard } from '@/authorization/authorization.guard';
 
+@UseGuards(AuthorizationGuard)
 @ApiTags('tag')
 @Controller()
 export class TagController {
@@ -44,12 +47,18 @@ export class TagController {
     return this.tagService.findById(id);
   }
 
+  @Get('tag-search/')
+  getTagSearch(@Query('query') query : string): Promise<{ rows: Tag[]; count: number; }>  {
+    return this.tagService.getTagSearch(query)
+  }
+
   @Post('tag')
   @ApiCreatedResponse({
     type: Tag,
     description: 'Create tag',
   })
   createBrand(@Body() tag: CreateTagDto): Promise<Tag> {
+    console.log(tag)
     return this.tagService.create(tag);
   }
 
