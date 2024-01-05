@@ -11,13 +11,13 @@ export const seedDatabaseWithMockInformation = async () => {
   if (!brandsExists.length) {
     try {
       const brandBulk = JSON.parse(
-        fs.readFileSync('assets/bulks/brand-bulk.json', 'utf8'),
+        fs.readFileSync('src/assets/bulks/brand-bulk.json', 'utf8'),
       );
       const tagBulk = JSON.parse(
-        fs.readFileSync('assets/bulks/tag-bulk.json', 'utf8'),
+        fs.readFileSync('src/assets/bulks/tag-bulk.json', 'utf8'),
       );
       const productBulk = JSON.parse(
-        fs.readFileSync('assets/bulks/product-bulk.json', 'utf8'),
+        fs.readFileSync('src/assets/bulks/product-bulk.json', 'utf8'),
       );
 
       const brands = brandBulk.map((brand: Brand) => {
