@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+
+  db:
+      image: mysql:8
+      container_name: deep-pharma-mysql
+      restart: always
+      ports:
+        - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: 123456
+        MYSQL_DATABASE: deep_pharma_db
+      expose:
+        - 3306
+      volumes:
+        - ./mysql-data:/var/lib/mysql
+
+  api:
+    container_name: dpapi
+    depends_on:
+      - db
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      ISSUER_BASE_URL: 'https://dev-nqzpabibd42atqci.us.auth0.com'
+      AUDIENCE: 'http://localhost:3001/'
+      AUTH0_ISSUER_BASE_URL: 'https://dev-nqzpabibd42atqci.us.auth0.com/'
+      TOKEN_ALG: 'RS256'
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USERNAME: 'root'
+      DB_PASSWORD: 123456
+      DB_NAME: 'deep_pharma_db'
+    ports:
+      - 3001:3001
+
+volumes: 
+  mysql-data:
